@@ -1,0 +1,15 @@
+{
+  "name": "6nimmt",
+  "version": "1.0.0",
+  "description": "the game 6 nimmt online",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Arthur Binello",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  }
+}

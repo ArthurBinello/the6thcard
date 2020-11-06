@@ -1,0 +1,44 @@
+body {
+	padding: 0;
+	margin: 0;
+	display: flex;
+	justify-content: center;
+	font-family: 'Roboto',sans-serif;
+	background-color: #212121;
+	color: #ffffff;
+	padding-top: 2rem;
+	text-align: center;
+}
+
+#menu{
+	position: relative;
+	margin: 0 auto;
+	padding: 2rem;
+	background-color: #303030;
+	justify-content: center;
+	-webkit-box-shadow: 0 0 10px black;
+	box-shadow: 0 0 10px black;
+	max-width: 30rem;
+	margin-bottom: 2rem;
+}
+
+#title{
+	text-align: center;
+	font-size: 300%;
+	padding-bottom: 2rem;
+}
+
+#buttons{
+	padding-top: .5rem;
+	padding-bottom: 2rem;
+}
+
+/* input[type=submit]{} */
+
+#content{
+	text-align: justify;
+}
+
+#credits{
+	padding-top: 2rem;
+}

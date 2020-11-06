@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>6 Nimmt!</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+		<link rel="stylesheet" type="text/css" href="/style.css" />
+		<script defer src="http://localhost:3000/socket.io/socket.io.js"></script>
+		<script defer src="menu-client.js"></script>
+		<script type="text/javascript">
+			function enterName(){
+				let name = document.getElementById("name").value;
+				let create = document.getElementById("create");
+				let join = document.getElementById("join");
+				if(name.length >= 2){
+					create.removeAttribute("disabled");
+					join.removeAttribute("disabled");
+				} else {
+					create.setAttribute("disabled","disabled");
+					join.setAttribute("disabled","disabled");
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="menu">
+			<div id="title">
+				🐮 6 Nimmt!
+			</div>
+			<div id="settings">
+				<form id="gameStart">
+					<div id="nameField">
+						<!-- <label for="name" id="nameLabel">Name</label> -->
+						<input type="text" id="name" name="name" maxlength="20" placeholder="Enter your name" pattern="[A-Za-z0-1-_éèàùêâûôîäëï]{2,20}" title="Numbers and letters only." onkeyup="enterName()" />
+					</div>
+					<div id="buttons">
+						<input type="submit" name="action" value="Join Game" id="join" disabled/>
+						<input type="submit" name="action" value="Create Game" id="create" disabled/>
+					</div>
+				</form>
+				<a href="/howtoplay"><button id="howtoplay" name="howtoplay">How to Play</button></a>
+			</div>
+			<div id="credits">
+				Made by <a href="https://github.com/ArthurBinello">Arthur Binello</a>
+			</div>
+		</div>
+	</body>
+</html>
