@@ -35,7 +35,6 @@ io.on('connection', socket => {
 		users[socket.id] = name;
 		//TODO length too long
 		let colorIndex = Math.floor(Math.random() * colorList.length);
-		console.log(colorList);
 		colorList.splice(colorIndex, 1);
 		colors[socket.id] = colorList[colorIndex];
 		let iconIndex = Math.floor(Math.random() * iconList.length);
@@ -53,6 +52,7 @@ io.on('connection', socket => {
 			delete colors[socket.id];
 			iconList.push(icons[socket.id]);
 			delete icons[socket.id];
+			socket.broadcast.emit('user-list', {names : users, colors, colors, icons : icons});
 		}
 	});
 });

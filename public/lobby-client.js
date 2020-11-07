@@ -13,6 +13,9 @@ socket.on('user-added', user => {
 });
 
 socket.on('user-list', userlist => {
+	while(playerlist.firstChild){
+		playerlist.removeChild(playerlist.firstChild);
+	}
 	for(var id in userlist.names){
 		var player = document.createElement("li");
 		player.appendChild(document.createTextNode(userlist.icons[id] + " " + userlist.names[id]));
@@ -27,5 +30,5 @@ socket.on('full-lobby', () => {
 });
 
 socket.on('user-dc', user => {
-	console.log(user);
+	window.alert(user + " has left the lobby.");
 })
