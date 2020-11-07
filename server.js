@@ -9,7 +9,7 @@ var users = {};
 var colors = {};
 var icons = {};
 var colorList = ['red', 'blue', 'yellow', 'green', 'olive', 'purple', 'fuchsia', 'maroon', 'aqua', 'lime'];
-var iconList = ['💣', '🦴', '🐚', '🌵', '🍭', '🛒', '🧭', '⚓', '🚀', '🌙', '💊', '🔑', '🌊', '🎈', '🎲', '🪀', '💡', '⚜️', '💎', '📞'];
+var iconList = ['💣', '🦴', '🐚', '🌵', '🍭', '🛒', '🧭', '⚓', '🚀', '🌙', '💊', '🔑', '🌊', '🎈', '🎲', '🍄', '💡', '⚜️', '💎', '📞'];
 
 var server = http.createServer(app);
 var socket = io.listen(server);
@@ -41,18 +41,17 @@ io.on('connection', socket => {
 		iconList.splice(iconIndex, 1);
 		icons[socket.id] = iconList[iconIndex];
 
-		socket.broadcast.emit('user-added', {name : users[socket.id], color : colors[socket.id], icon : icons[socket.id]});
+		socket.broadcast.emit('user-added', {id : socket.id, name : users[socket.id], color : colors[socket.id], icon : icons[socket.id]});
 		socket.emit('user-list', {names : users, colors, colors, icons : icons});
 	});
 	socket.on('disconnect', () => {
 		if(users[socket.id] != undefined){
-			socket.broadcast.emit('user-dc', users[socket.id]);
+			socket.broadcast.emit('user-dc', {id : socket.id, name : users[socket.id]});
 			delete users[socket.id];
 			colorList.push(colors[socket.id]);
 			delete colors[socket.id];
 			iconList.push(icons[socket.id]);
 			delete icons[socket.id];
-			socket.broadcast.emit('user-list', {names : users, colors, colors, icons : icons});
 		}
 	});
 });

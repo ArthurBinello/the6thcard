@@ -8,17 +8,16 @@ socket.emit('new-user', name);
 socket.on('user-added', user => {
 	var you = document.createElement("li");
 	you.appendChild(document.createTextNode(user.icon + " " + user.name));
+	you.setAttribute('id', user.id);
 	you.style.color = user.color;
 	playerlist.appendChild(you);
 });
 
 socket.on('user-list', userlist => {
-	while(playerlist.firstChild){
-		playerlist.removeChild(playerlist.firstChild);
-	}
 	for(var id in userlist.names){
 		var player = document.createElement("li");
 		player.appendChild(document.createTextNode(userlist.icons[id] + " " + userlist.names[id]));
+		player.setAttribute('id', id);
 		player.style.color = userlist.colors[id];
 		playerlist.appendChild(player);
 	}
@@ -30,5 +29,7 @@ socket.on('full-lobby', () => {
 });
 
 socket.on('user-dc', user => {
-	window.alert(user + " has left the lobby.");
+	let dc = document.getElementById(user.id);
+	playerlist.removeChild(dc);
+	window.alert(user.name + " has left the lobby.");
 })
