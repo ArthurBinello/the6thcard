@@ -1,13 +1,26 @@
 const socket = io('http://localhost:3000');
 var url = new URL(window.location.href);
-var name = url.searchParams.get('name');
+// var name = url.searchParams.get('name');
+var name = sessionStorage.getItem('name');
+var room = sessionStorage.getItem('room');
+var owner = sessionStorage.getItem('owner');
 const playerlist = document.getElementById('playerlist');
 
-socket.emit('new-user', name);
+if(owner == 1){
+	console.log(sessionStorage.owner);
+	//TODO make button do something
+	let btn = document.createElement("BUTTON");
+	btn.innerHTML = 'Start Game';
+	document.body.appendChild(btn);
+	//TODO disable button when lobby has less than 2 players
+}
+socket.emit('new-user', {name : name, room : room, owner : owner});
 
 socket.on('user-added', user => {
 	var you = document.createElement("li");
-	you.appendChild(document.createTextNode(user.icon + " " + user.name));
+	let text = user.name;
+	if(user.owner == 1) text += ' 👑';
+	you.appendChild(document.createTextNode(text));
 	you.setAttribute('id', user.id);
 	you.style.color = user.color;
 	playerlist.appendChild(you);
@@ -16,7 +29,9 @@ socket.on('user-added', user => {
 socket.on('user-list', userlist => {
 	for(var id in userlist.names){
 		var player = document.createElement("li");
-		player.appendChild(document.createTextNode(userlist.icons[id] + " " + userlist.names[id]));
+		let text = userlist.names[id];
+		if(id == userlist.owner) text += ' 👑';
+		player.appendChild(document.createTextNode(text));
 		player.setAttribute('id', id);
 		player.style.color = userlist.colors[id];
 		playerlist.appendChild(player);

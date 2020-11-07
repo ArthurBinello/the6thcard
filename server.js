@@ -7,9 +7,8 @@ var app = express();
 
 var users = {};
 var colors = {};
-var icons = {};
+var owner = null;
 var colorList = ['red', 'blue', 'yellow', 'green', 'olive', 'purple', 'fuchsia', 'maroon', 'aqua', 'lime'];
-var iconList = ['💣', '🦴', '🐚', '🌵', '🍭', '🛒', '🧭', '⚓', '🚀', '🌙', '💊', '🔑', '🌊', '🎈', '🎲', '🍄', '💡', '⚜️', '💎', '📞'];
 
 var server = http.createServer(app);
 var socket = io.listen(server);
@@ -27,31 +26,30 @@ app.get('/lobby', function(req, res){
 });
 
 io.on('connection', socket => {
-	socket.on('new-user', name => {
+	socket.on('new-user', player => {
 		if(Object.keys(users).length >= 10){
 			socket.emit('full-lobby');
 			return;
 		}
-		users[socket.id] = name;
+		users[socket.id] = player.name;
+		if(player.owner == 1){
+			owner = socket.id;
+		}
 		//TODO length too long
 		let colorIndex = Math.floor(Math.random() * colorList.length);
 		colorList.splice(colorIndex, 1);
 		colors[socket.id] = colorList[colorIndex];
-		let iconIndex = Math.floor(Math.random() * iconList.length);
-		iconList.splice(iconIndex, 1);
-		icons[socket.id] = iconList[iconIndex];
 
-		socket.broadcast.emit('user-added', {id : socket.id, name : users[socket.id], color : colors[socket.id], icon : icons[socket.id]});
-		socket.emit('user-list', {names : users, colors, colors, icons : icons});
+		socket.broadcast.emit('user-added', {id : socket.id, name : users[socket.id], color : colors[socket.id], owner : player.owner});
+		socket.emit('user-list', {names : users, colors, colors, owner : owner});
 	});
 	socket.on('disconnect', () => {
 		if(users[socket.id] != undefined){
+			//TODO change lobby owner
 			socket.broadcast.emit('user-dc', {id : socket.id, name : users[socket.id]});
 			delete users[socket.id];
 			colorList.push(colors[socket.id]);
 			delete colors[socket.id];
-			iconList.push(icons[socket.id]);
-			delete icons[socket.id];
 		}
 	});
 });

@@ -7,7 +7,7 @@ socket.on('console-msg', data => {
 });
 
 function generateNewRoom() {
-	var codes = [];
+	var codes = []; //TODO make it shared
 	let roomCode = "";
 	let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	do {
@@ -23,17 +23,20 @@ function generateNewRoom() {
 startForm.addEventListener('submit', e => {
 	e.preventDefault();
 	let formSource = e.submitter.id;
-	// socket.emit('new-user', nameInput.value);
 	let roomCode;
+	let owner = 0;
 	if(formSource == 'create'){
 		roomCode = generateNewRoom();
+		owner = 1;
 	} else {
 		do{
 			roomCode = window.prompt('Room code (4 letters)').toUpperCase();
 		} while(!roomCode.match('^[A-Z]{4}$'))
 	}
-	let address = window.location.protocol + '//' + window.location.host + '/lobby?name=' + nameInput.value;
-	// address += '&room=' + roomCode;
+	sessionStorage.setItem('name', nameInput.value);
+	sessionStorage.setItem('room', roomCode);
+	sessionStorage.setItem('owner', owner);
+	let address = window.location.protocol + '//' + window.location.host + '/lobby';
+	// address += '?name=' + nameInput.value + '&room=' + roomCode;
 	window.location.href = address;
-	console.log(window.location);
 });
