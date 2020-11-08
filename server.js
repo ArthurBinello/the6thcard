@@ -45,8 +45,17 @@ io.on('connection', socket => {
 	});
 	socket.on('disconnect', () => {
 		if(users[socket.id] != undefined){
-			//TODO change lobby owner
-			socket.broadcast.emit('user-dc', {id : socket.id, name : users[socket.id]});
+			while(owner == socket.id){
+				if(Object.keys(users).length <= 1){
+					owner = null;
+					//TODO delete room
+					break;
+				}
+				let keys = Object.keys(users);
+				owner = keys[keys.length * Math.random() << 0];
+			}
+			io.sockets.to(owner).emit('ownership');
+			socket.broadcast.emit('user-dc', {id : socket.id, name : users[socket.id], owner : owner});
 			delete users[socket.id];
 			colorList.push(colors[socket.id]);
 			delete colors[socket.id];
