@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>6 Nimmt!</title>
+		<title>The 6th card</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -27,13 +27,14 @@
 	<body>
 		<div id="menu">
 			<div id="title">
-				🐮 6 Nimmt!
+				The 6th card
 			</div>
 			<div id="settings">
 				<form id="gameStart">
 					<div id="nameField">
 						<!-- <label for="name" id="nameLabel">Name</label> -->
-						<input type="text" id="name" name="name" maxlength="20" placeholder="Enter your name" pattern="[A-Za-z0-1-_éèàùêâûôîäëï]{2,20}" title="Numbers and letters only. (and - & _)" onkeyup="enterName()" />
+						<label for="name" id="labelname" class="noselect">Name</label>
+						<input type="text" id="name" name="name" maxlength="20" placeholder="Enter your name" autocomplete="off" pattern="[A-Za-z0-1-_éèàùêâûôîäëï]{2,20}" title="Numbers and letters only. (and - & _)" onkeyup="enterName()" />
 					</div>
 					<div id="buttons">
 						<input type="submit" name="action" value="Join Game" id="join" disabled/>

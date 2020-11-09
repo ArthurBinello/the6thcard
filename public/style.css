@@ -20,6 +20,7 @@ body {
 	box-shadow: 0 0 10px black;
 	max-width: 30rem;
 	margin-bottom: 2rem;
+	border-radius: .25rem;
 }
 
 #title{
@@ -43,7 +44,7 @@ body {
 
 input[type=submit], button {
 	border: 0px;
-	border-radius: .5rem;
+	border-radius: .25rem;
 	color: #FFFFFF;
 	font-size: 1.25rem;
 	padding: 1rem;
@@ -55,18 +56,53 @@ input[type=submit], button {
 input[type=submit]:hover, button:hover {
 	background: #1E62D0;
 	box-shadow: 0px .4rem 0 0 #023384;
-	border-radius: .5rem;
+	border-radius: .25rem;
 }
 
 input[type=submit]:disabled, button:disabled {
 	background: #999999;
 	box-shadow: 0px .4rem 0 0 #505050;
-	border-radius: .5rem;
+	border-radius: .25rem;
 }
 
 input[type=submit]:focus, button:focus {
 	background: #1E62D0;
-	border-radius: .5rem;
+	border-radius: .25rem;
 	box-shadow: 0px .2rem 0 0 #023384;
 	transform: translateY(.2rem);
 }
+
+#name {
+	padding: 1rem;
+	font-size: 1rem;
+	background-color: #303030;
+	color: white;
+	border-style: solid;
+	border-radius: .25rem;
+	border-color: #999999;
+	width: 15.6rem;
+}
+
+#name::placeholder {
+	color: #505050;
+}
+
+#labelname {
+	font-size: 1.5rem;
+	left: 3rem;
+	/* transform: translateX(20px); */
+	transform: translateY(-0.9rem);
+	position: absolute;
+	color: #999999;
+	text-shadow: 1px 0 0 #303030, 2px 0 0 #303030, 3px 0 0 #303030, 4px 0 0 #303030, 5px 0 0 #303030, 6px 0 0 #303030, -1px 0 0 #303030, -2px 0 0 #303030, -3px 0 0 #303030, -4px 0 0 #303030, -5px 0 0 #303030, -6px 0 0 #303030;
+	border: 1px solid #303030;
+}
+
+.noselect {
+	-webkit-touch-callout: none;
+	  -webkit-user-select: none;
+	   -khtml-user-select: none;
+		 -moz-user-select: none;
+		  -ms-user-select: none;
+			  user-select: none;
+  }
