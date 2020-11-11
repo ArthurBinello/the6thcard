@@ -8,9 +8,10 @@ const playerlist = document.getElementById('playerlist');
 
 function addStartButton(){
 	//TODO make button do something
+	let menu = document.getElementById("menu");
 	let btn = document.createElement("BUTTON");
 	btn.innerHTML = 'Start Game';
-	document.body.appendChild(btn);
+	menu.appendChild(btn);
 	//TODO disable button when lobby has less than 2 players
 }
 
@@ -62,5 +63,6 @@ socket.on('user-dc', user => {
 
 socket.on('ownership', () => {
 	owner = 1;
+	//TODO two start buttons sometimes
 	addStartButton();
 });
