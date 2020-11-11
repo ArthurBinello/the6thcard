@@ -124,4 +124,22 @@ li {
 	border-radius: .5rem;
 	margin-bottom: .5rem;
 	box-shadow: 0 0 .5rem #121212;
+	border: .2rem solid;
+}
+
+.red{border-color: red;}
+.blue{border-color: blue;}
+.yellow{border-color: yellow;}
+.green{border-color: green;}
+.orange{border-color: orange;}
+.purple{border-color: purple;}
+.pink{border-color: pink;}
+.brown{border-color: brown;}
+.aqua{border-color: aqua;}
+.lime{border-color: lime;}
+
+.owner{
+	float: left;
+	position: absolute;
+	padding-left: .5rem;
 }

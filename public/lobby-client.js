@@ -24,11 +24,15 @@ socket.on('user-added', user => {
 	var you = document.createElement("li");
 	let text = user.name;
 	if(user.owner == 1){
-		text += ' 👑';
+		let crown = document.createElement("div");
+		crown.innerHTML = '👑';
+		crown.className = "owner";
+		you.appendChild(crown);
 	}
 	you.appendChild(document.createTextNode(text));
 	you.setAttribute('id', user.id);
-	you.style.color = user.color;
+	you.setAttribute('class', user.color);
+	// you.style.color = user.color;
 	playerlist.appendChild(you);
 });
 
@@ -37,11 +41,15 @@ socket.on('user-list', userlist => {
 		var player = document.createElement("li");
 		let text = userlist.names[id];
 		if(id == userlist.owner){
-			text += ' 👑';
+			let crown = document.createElement("div");
+			crown.innerHTML = '👑';
+			crown.className = "owner";
+			player.appendChild(crown);
 		}
 		player.appendChild(document.createTextNode(text));
 		player.setAttribute('id', id);
-		player.style.color = userlist.colors[id];
+		player.setAttribute('class', userlist.colors[id]);
+		// player.style.color = userlist.colors[id];
 		playerlist.appendChild(player);
 	}
 });
@@ -55,14 +63,19 @@ socket.on('user-dc', user => {
 	let dc = document.getElementById(user.id);
 	playerlist.removeChild(dc);
 	let newOwner = document.getElementById(user.owner);
-	if(!newOwner.innerHTML.includes('👑')){
-		newOwner.innerHTML += ' 👑';
+	let ownersList = document.getElementsByClassName('owner');
+	if(ownersList.length <= 0){
+		let crown = document.createElement("div");
+		crown.innerHTML = '👑';
+		crown.className = "owner";
+		newOwner.insertBefore(crown, newOwner.firstChild);
 	}
 	window.alert(user.name + " has left the lobby.");
 });
 
 socket.on('ownership', () => {
-	owner = 1;
-	//TODO two start buttons sometimes
-	addStartButton();
+	if(owner != 1){
+		owner = 1;
+		addStartButton();
+	}
 });

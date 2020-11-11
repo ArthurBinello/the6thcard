@@ -8,7 +8,7 @@ var app = express();
 var users = {};
 var colors = {};
 var owner = null;
-var colorList = ['red', 'blue', 'yellow', 'green', 'olive', 'purple', 'fuchsia', 'maroon', 'aqua', 'lime'];
+var colorList = ['red', 'blue', 'yellow', 'green', 'orange', 'purple', 'pink', 'brown', 'aqua', 'lime'];
 
 var server = http.createServer(app);
 var socket = io.listen(server);
