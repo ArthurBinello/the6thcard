@@ -13,16 +13,18 @@ var colorList = ['red', 'blue', 'yellow', 'green', 'orange', 'purple', 'pink', '
 var server = http.createServer(app);
 var socket = io.listen(server);
 
+app.set('views', './views');
+app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res){
-	res.sendFile(path.join(__dirname + '/mainmenu.html'));
+	res.render('mainmenu');
 });
 app.get('/howtoplay', function(req, res){
-	res.sendFile(path.join(__dirname + '/howtoplay.html'));
+	res.render('howtoplay');
 });
 app.get('/lobby', function(req, res){
-	res.sendFile(path.join(__dirname + '/lobby.html'));
+	res.render('lobby')
 });
 
 io.on('connection', socket => {
