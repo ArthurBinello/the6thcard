@@ -1,69 +1,90 @@
 const port = 6969;
 var express = require('express');
-var path = require('path');
-var http = require('http');
+// var path = require('path');
 var io = require('socket.io')(3000);
 var app = express();
+const server = require('http').createServer(app);
 
-var users = {};
-var colors = {};
-var owner = null;
-var colorList = ['red', 'blue', 'yellow', 'green', 'orange', 'purple', 'pink', 'brown', 'aqua', 'lime'];
-
-var server = http.createServer(app);
-var socket = io.listen(server);
+// var socket = io.listen(server);
 
 app.set('views', './views');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/', function(req, res){
+var rooms = {};
+var owners = {};
+// var colors = {};
+// var colorList = ['red', 'blue', 'yellow', 'green', 'orange', 'purple', 'pink', 'brown', 'aqua', 'lime'];
+
+app.get('/', (req, res) => {
 	res.render('mainmenu');
 });
-app.get('/howtoplay', function(req, res){
+app.get('/howtoplay', (req, res) => {
 	res.render('howtoplay');
 });
-app.get('/lobby', function(req, res){
-	res.render('lobby')
+app.get('/lobby', (req, res) => {
+	res.render('lobby');
 });
 
 io.on('connection', socket => {
 	socket.on('new-user', player => {
-		if(Object.keys(users).length >= 10){
+		if(rooms[player.room] == null){
+			if(player.owner != 1){
+				socket.emit('unknown-room');
+				return;
+			}
+			rooms[player.room] = { users : {} };
+			let roomList = Object.keys(rooms);
+			socket.broadcast.emit('update-room-list', roomList);
+		}
+		if(Object.keys(rooms[player.room]).length >= 10){
 			socket.emit('full-lobby');
 			return;
 		}
-		users[socket.id] = player.name;
+		socket.join(player.room);
+		rooms[player.room].users[socket.id] = player.name;
 		if(player.owner == 1){
-			owner = socket.id;
+			owners[player.room] = socket.id;
 		}
-		//TODO length too long
-		let colorIndex = Math.floor(Math.random() * colorList.length);
-		colorList.splice(colorIndex, 1);
-		colors[socket.id] = colorList[colorIndex];
+		//TODO length too long + remake color
+		// let colorIndex = Math.floor(Math.random() * colorList.length);
+		// colorList.splice(colorIndex, 1);
+		// colors[socket.id] = colorList[colorIndex];
 
-		socket.broadcast.emit('user-added', {id : socket.id, name : users[socket.id], color : colors[socket.id], owner : player.owner});
-		socket.emit('user-list', {names : users, colors, colors, owner : owner});
+		socket.to(player.room).broadcast.emit('user-added', {room : player.room, id : socket.id, name : player.name, owner : player.owner});
+		socket.emit('user-list', {room : player.room, names : rooms[player.room].users, owner : owners[player.room], you : socket.id});
 	});
 	socket.on('disconnect', () => {
-		if(users[socket.id] != undefined){
-			while(owner == socket.id){
-				if(Object.keys(users).length <= 1){
-					owner = null;
-					//TODO delete room
-					break;
+		getUserRooms(socket).forEach(room => {
+			if(Object.keys(rooms[room].users).length <= 1){
+				delete owners[room];
+				delete rooms[room];
+				let roomList = Object.keys(rooms);
+				socket.broadcast.emit('update-room-list', roomList);
+			}else{
+				while(owners[room] == socket.id){
+					let keys = Object.keys(rooms[room].users);
+					owners[room] = keys[keys.length * Math.random() << 0];
 				}
-				let keys = Object.keys(users);
-				owner = keys[keys.length * Math.random() << 0];
+				io.sockets.to(owners[room]).emit('ownership');
+				socket.to(room).broadcast.emit('user-dc', {id : socket.id, name : rooms[room].users[socket.id], owner : owners[room]});
+				delete rooms[room].users[socket.id];
 			}
-			io.sockets.to(owner).emit('ownership');
-			socket.broadcast.emit('user-dc', {id : socket.id, name : users[socket.id], owner : owner});
-			delete users[socket.id];
-			colorList.push(colors[socket.id]);
-			delete colors[socket.id];
-		}
+		});
+		// colorList.push(colors[socket.id]);
+		// delete colors[socket.id];
 	});
 });
 
-app.listen(port);
+function getUserRooms(socket) {
+	return Object.entries(rooms).reduce((names, [name, room]) => {
+		if (room.users[socket.id] != null){
+			names.push(name);
+		}
+		return names;
+	}, [])
+}
+
+server.listen(port);
 console.debug('Server listening on : http://127.0.0.1:'+ port);
