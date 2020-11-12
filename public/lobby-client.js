@@ -1,6 +1,5 @@
 const socket = io('http://localhost:3000');
 var url = new URL(window.location.href);
-// var name = url.searchParams.get('name');
 var name = sessionStorage.getItem('name');
 var room = sessionStorage.getItem('room');
 var owner = sessionStorage.getItem('owner');
@@ -32,8 +31,7 @@ socket.on('user-added', user => {
 	}
 	you.appendChild(document.createTextNode(user.name));
 	you.setAttribute('id', user.id);
-	you.setAttribute('class', 'lobbylist');
-	// you.setAttribute('class', user.color);
+	you.setAttribute('class', 'lobbylist ' + user.color);
 	playerlist.appendChild(you);
 });
 
@@ -52,9 +50,7 @@ socket.on('user-list', userlist => {
 		}
 		player.appendChild(document.createTextNode(text));
 		player.setAttribute('id', id);
-		player.setAttribute('class', 'lobbylist');
-		// player.setAttribute('class', userlist.colors[id]);
-		// player.style.color = userlist.colors[id];
+		player.setAttribute('class', 'lobbylist ' + userlist.colors[id]);
 		playerlist.appendChild(player);
 	}
 });

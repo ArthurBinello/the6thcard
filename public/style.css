@@ -115,7 +115,7 @@ input[type=submit]:focus, button:focus {
 	font-size: larger;
 	list-style-type: none;
 	padding-left: 0;
-	/* margin-top: 2.5rem; */
+	margin-top: 1.5rem;
 }
 
 .lobbylist {
@@ -132,10 +132,10 @@ input[type=submit]:focus, button:focus {
 .blue{border-color: blue;}
 .yellow{border-color: yellow;}
 .green{border-color: green;}
-.orange{border-color: orange;}
+.orange{border-color: orangered;}
 .purple{border-color: purple;}
-.pink{border-color: pink;}
-.brown{border-color: brown;}
+.pink{border-color: hotpink;}
+.brown{border-color: saddlebrown;}
 .aqua{border-color: aqua;}
 .lime{border-color: lime;}
 
@@ -157,4 +157,10 @@ input[type=submit]:focus, button:focus {
 
 #leavelobby:hover{
 	background-color: #121212;
+	box-shadow: 0 0 .5rem #121212;
+}
+
+#leavelobby:active{
+	background-color: #303030;
+	box-shadow: 0 0 .5rem #121212;
 }

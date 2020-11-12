@@ -14,8 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 
 var rooms = {};
 var owners = {};
-// var colors = {};
-// var colorList = ['red', 'blue', 'yellow', 'green', 'orange', 'purple', 'pink', 'brown', 'aqua', 'lime'];
+var colorList = ['red', 'blue', 'yellow', 'green', 'orange', 'purple', 'pink', 'brown', 'aqua', 'lime'];
 
 app.get('/', (req, res) => {
 	res.render('mainmenu');
@@ -34,7 +33,7 @@ io.on('connection', socket => {
 				socket.emit('unknown-room');
 				return;
 			}
-			rooms[player.room] = { users : {} };
+			rooms[player.room] = { users : {}, colors : {} };
 			let roomList = Object.keys(rooms);
 			socket.broadcast.emit('update-room-list', roomList);
 		}
@@ -44,16 +43,23 @@ io.on('connection', socket => {
 		}
 		socket.join(player.room);
 		rooms[player.room].users[socket.id] = player.name;
+
+		let color;
+		let colors = [];
+		for(var key in rooms[player.room].colors){
+			colors.push(rooms[player.room].colors[key]);
+		}
+		do{
+			color = colorList[Math.floor(Math.random() * colorList.length)];
+		}while(!color in colors);
+		rooms[player.room].colors[socket.id] = color;
+
 		if(player.owner == 1){
 			owners[player.room] = socket.id;
 		}
-		//TODO length too long + remake color
-		// let colorIndex = Math.floor(Math.random() * colorList.length);
-		// colorList.splice(colorIndex, 1);
-		// colors[socket.id] = colorList[colorIndex];
 
-		socket.to(player.room).broadcast.emit('user-added', {room : player.room, id : socket.id, name : player.name, owner : player.owner});
-		socket.emit('user-list', {room : player.room, names : rooms[player.room].users, owner : owners[player.room], you : socket.id});
+		socket.to(player.room).broadcast.emit('user-added', {room : player.room, id : socket.id, name : player.name, color : color, owner : player.owner});
+		socket.emit('user-list', {room : player.room, names : rooms[player.room].users, colors : rooms[player.room].colors, owner : owners[player.room], you : socket.id});
 	});
 	socket.on('disconnect', () => {
 		getUserRooms(socket).forEach(room => {
