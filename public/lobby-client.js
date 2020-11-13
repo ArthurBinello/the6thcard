@@ -11,8 +11,17 @@ function addStartButton(){
 	let menu = document.getElementById("menu");
 	let btn = document.createElement("BUTTON");
 	btn.innerHTML = 'Start Game';
+	btn.setAttribute('id', 'startGame');
+	if(playerlist.getElementsByClassName('lobbylist').length < 2){
+		btn.disabled = true;
+	}
+	btn.setAttribute('onclick', 'startGame()');
+	// btn.onclick = startGame();
 	menu.appendChild(btn);
-	//TODO disable button when lobby has less than 2 players
+}
+
+function startGame(){
+	socket.emit('start-game', room);
 }
 
 if(owner == 1){
@@ -33,6 +42,9 @@ socket.on('user-added', user => {
 	you.setAttribute('id', user.id);
 	you.setAttribute('class', 'lobbylist ' + user.color);
 	playerlist.appendChild(you);
+	if(playerlist.getElementsByClassName('lobbylist').length >= 2 && document.getElementById('startGame')){
+		document.getElementById('startGame').disabled = false;
+	}
 });
 
 socket.on('user-list', userlist => {
@@ -68,6 +80,9 @@ socket.on('unknown-room', () => {
 socket.on('user-dc', user => {
 	let dc = document.getElementById(user.id);
 	playerlist.removeChild(dc);
+	if(playerlist.getElementsByClassName('lobbylist').length < 2 && document.getElementById('startGame')){
+		document.getElementById('startGame').disabled = true;
+	}
 	let newOwner = document.getElementById(user.owner);
 	let ownersList = document.getElementsByClassName('owner');
 	if(ownersList.length <= 0){
@@ -84,4 +99,8 @@ socket.on('ownership', () => {
 		owner = 1;
 		addStartButton();
 	}
+});
+
+socket.on('game-started', () => {
+	// window.location.href = window.location.protocol + '//' + window.location.host + '/game';
 });

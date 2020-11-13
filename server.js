@@ -1,7 +1,8 @@
 const port = 6969;
 var express = require('express');
 // var path = require('path');
-var io = require('socket.io')(3000);
+var aba = require('socket.io')(3000);
+io = aba({transports: ['websocket'], upgrade: false});
 var app = express();
 const server = require('http').createServer(app);
 
@@ -24,6 +25,9 @@ app.get('/howtoplay', (req, res) => {
 });
 app.get('/lobby', (req, res) => {
 	res.render('lobby');
+});
+app.get('/game', (req, res) => {
+	res.render('game');
 });
 
 io.on('connection', socket => {
@@ -76,10 +80,12 @@ io.on('connection', socket => {
 				io.sockets.to(owners[room]).emit('ownership');
 				socket.to(room).broadcast.emit('user-dc', {id : socket.id, name : rooms[room].users[socket.id], owner : owners[room]});
 				delete rooms[room].users[socket.id];
+				delete rooms[room].colors[socket.id];
 			}
 		});
-		// colorList.push(colors[socket.id]);
-		// delete colors[socket.id];
+	});
+	socket.on('start-game', room => {
+		io.in(room).emit('game-started');
 	});
 });
 
