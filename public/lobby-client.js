@@ -1,28 +1,9 @@
 const socket = io('http://localhost:3000');
-var url = new URL(window.location.href);
 var name = sessionStorage.getItem('name');
 var room = sessionStorage.getItem('room');
 var owner = sessionStorage.getItem('owner');
 const playerlist = document.getElementById('playerlist');
 const roomCode = document.getElementById("roomcode");
-
-function addStartButton(){
-	//TODO make button do something
-	let menu = document.getElementById("menu");
-	let btn = document.createElement("BUTTON");
-	btn.innerHTML = 'Start Game';
-	btn.setAttribute('id', 'startGame');
-	if(playerlist.getElementsByClassName('lobbylist').length < 2){
-		btn.disabled = true;
-	}
-	btn.setAttribute('onclick', 'startGame()');
-	// btn.onclick = startGame();
-	menu.appendChild(btn);
-}
-
-function startGame(){
-	socket.emit('start-game', room);
-}
 
 if(owner == 1){
 	addStartButton();
@@ -102,5 +83,22 @@ socket.on('ownership', () => {
 });
 
 socket.on('game-started', () => {
-	// window.location.href = window.location.protocol + '//' + window.location.host + '/game';
+	window.location.href = window.location.protocol + '//' + window.location.host + '/game';
 });
+function addStartButton(){
+	//TODO make button do something
+	let menu = document.getElementById("menu");
+	let btn = document.createElement("BUTTON");
+	btn.innerHTML = 'Start Game';
+	btn.setAttribute('id', 'startGame');
+	if(playerlist.getElementsByClassName('lobbylist').length < 2){
+		btn.disabled = true;
+	}
+	btn.setAttribute('onclick', 'startGame()');
+	// btn.onclick = startGame();
+	menu.appendChild(btn);
+}
+
+function startGame(){
+	socket.emit('start-game', room);
+}

@@ -1,8 +1,7 @@
 const port = 6969;
 var express = require('express');
 // var path = require('path');
-var aba = require('socket.io')(3000);
-io = aba({transports: ['websocket'], upgrade: false});
+var io = require('socket.io')(3000);
 var app = express();
 const server = require('http').createServer(app);
 
@@ -31,6 +30,7 @@ app.get('/game', (req, res) => {
 });
 
 io.on('connection', socket => {
+	//lobby
 	socket.on('new-user', player => {
 		if(rooms[player.room] == null){
 			if(player.owner != 1){
@@ -86,6 +86,11 @@ io.on('connection', socket => {
 	});
 	socket.on('start-game', room => {
 		io.in(room).emit('game-started');
+	});
+
+	//game
+	socket.on('connect-game', player => {
+		socket.join(player.room);
 	});
 });
 
