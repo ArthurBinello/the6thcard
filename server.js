@@ -98,10 +98,10 @@ io.on('connection', socket => {
 		games[player.room].colors[socket.id] = player.color;
 		games[player.room].points[socket.id] = 0;
 		games[player.room].playersConnected++;
+		socket.emit('return-id', socket.id);
 		if(games[player.room].playersConnected >= games[player.room].totalPlayers){
-			//TODO : send to everyone info of other players
-			//TODO : deal cards AFTER it send infos is done
 			dealCards(player.room);
+			io.in(player.room).emit('player-setup', games[player.room]);
 		}
 	});
 });

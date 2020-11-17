@@ -33,14 +33,13 @@ socket.on('user-list', userlist => {
 		var player = document.createElement("li");
 		let text = userlist.names[id];
 		if(id == userlist.you){
-			text += ' (you)'
+			text += ' (you)';
 		}
 		if(id == userlist.owner){
 			let crown = document.createElement("div");
 			crown.innerHTML = '👑';
 			crown.className = "owner";
 			player.appendChild(crown);
-			sessionStorage.setItem('color', userlist.colors[id]);
 		}
 		player.appendChild(document.createTextNode(text));
 		player.setAttribute('id', id);
