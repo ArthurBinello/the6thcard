@@ -40,6 +40,7 @@ socket.on('user-list', userlist => {
 			crown.innerHTML = '👑';
 			crown.className = "owner";
 			player.appendChild(crown);
+			sessionStorage.setItem('color', userlist.colors[id]);
 		}
 		player.appendChild(document.createTextNode(text));
 		player.setAttribute('id', id);
@@ -100,5 +101,6 @@ function addStartButton(){
 }
 
 function startGame(){
-	socket.emit('start-game', room);
+	let nbPlayers = playerlist.getElementsByClassName('lobbylist').length;
+	socket.emit('start-game', {room  : room, nbPlayers : nbPlayers});
 }

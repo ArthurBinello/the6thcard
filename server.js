@@ -15,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 var rooms = {};
 var owners = {};
 var colorList = ['red', 'blue', 'yellow', 'green', 'orange', 'purple', 'pink', 'brown', 'aqua', 'lime'];
+var games = {};
 
 app.get('/', (req, res) => {
 	res.render('mainmenu');
@@ -84,13 +85,24 @@ io.on('connection', socket => {
 			}
 		});
 	});
-	socket.on('start-game', room => {
-		io.in(room).emit('game-started');
+	socket.on('start-game', settings => {
+		games[settings.room] = { users : {}, cards : {}, colors : {}, points : {}, totalPlayers : settings.nbPlayers, playersConnected : 0 };
+		io.in(settings.room).emit('game-started');
 	});
 
 	//game
 	socket.on('connect-game', player => {
 		socket.join(player.room);
+		games[player.room].users[socket.id] = player.name;
+		games[player.room].cards[socket.id] = [];
+		games[player.room].colors[socket.id] = player.color;
+		games[player.room].points[socket.id] = 0;
+		games[player.room].playersConnected++;
+		if(games[player.room].playersConnected >= games[player.room].totalPlayers){
+			//TODO : send to everyone info of other players
+			//TODO : deal cards AFTER it send infos is done
+			dealCards(player.room);
+		}
 	});
 });
 
@@ -101,6 +113,10 @@ function getUserRooms(socket) {
 		}
 		return names;
 	}, [])
+}
+
+function dealCards(room) {
+
 }
 
 server.listen(port);
