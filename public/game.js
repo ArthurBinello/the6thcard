@@ -7,6 +7,8 @@ var myID;
 
 const content = document.getElementById('content');
 const playerlist = document.getElementById('playerlist');
+const board = document.getElementById('board');
+const hand = document.getElementById('hand');
 
 socket.emit('connect-game', {name : name, room : room, owner : owner, color : color});
 
@@ -22,16 +24,14 @@ socket.on('player-setup', game => {
 		if(myID == id){
 			text += ' (you)';
 		}
-		// if(id == game.owner){
-		// 	let crown = document.createElement("div");
-		// 	crown.innerHTML = '👑';
-		// 	crown.className = "owner";
-		// 	player.appendChild(crown);
-		// 	sessionStorage.setItem('color', game.colors[id]);
-		// }
 		player.appendChild(document.createTextNode(text));
 		player.setAttribute('id', id);
 		player.setAttribute('class', 'lobbylist ' + game.colors[id]);
 		playerlist.appendChild(player);
+	}
+	for(var card in game.cards[myID]){
+		var cardEl = document.createElement("li");
+		cardEl.appendChild(document.createTextNode(game.cards[myID][card]));
+		hand.appendChild(cardEl);
 	}
 });

@@ -67,6 +67,7 @@ io.on('connection', socket => {
 		socket.emit('user-list', {room : player.room, names : rooms[player.room].users, colors : rooms[player.room].colors, owner : owners[player.room], you : socket.id});
 	});
 	socket.on('disconnect', () => {
+		//TODO when leaving game
 		getUserRooms(socket).forEach(room => {
 			if(Object.keys(rooms[room].users).length <= 1){
 				delete owners[room];
@@ -86,7 +87,7 @@ io.on('connection', socket => {
 		});
 	});
 	socket.on('start-game', settings => {
-		games[settings.room] = { users : {}, cards : {}, colors : {}, points : {}, totalPlayers : settings.nbPlayers, playersConnected : 0 };
+		games[settings.room] = { users : {}, cards : {}, colors : {}, points : {}, totalPlayers : settings.nbPlayers, playersConnected : 0, board : {} };
 		io.in(settings.room).emit('game-started');
 	});
 
@@ -100,7 +101,7 @@ io.on('connection', socket => {
 		games[player.room].playersConnected++;
 		socket.emit('return-id', socket.id);
 		if(games[player.room].playersConnected >= games[player.room].totalPlayers){
-			dealCards(player.room);
+			dealCards(games[player.room]);
 			io.in(player.room).emit('player-setup', games[player.room]);
 		}
 	});
@@ -116,7 +117,21 @@ function getUserRooms(socket) {
 }
 
 function dealCards(room) {
-
+	var cards = [];
+	for(var i = 1; i <= 104; i++){
+		cards.push(i);
+	}
+	for(var id in room.cards){
+		for(var j = 0; j < 10; j++){
+			var randCard = cards.splice(Math.floor(Math.random()*cards.length), 1);
+			room.cards[id].push(randCard[0]);
+		}
+		room.cards[id].sort(function(a, b) {return a - b;});
+	}
+	for(var k = 0; k < 4; k++){
+		room.board[k] = [];
+		room.board[k].push(cards.splice(Math.floor(Math.random()*cards.length), 1)[0]);
+	}
 }
 
 server.listen(port);
