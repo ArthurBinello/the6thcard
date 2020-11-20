@@ -103,6 +103,7 @@ io.on('connection', socket => {
 		if(games[player.room].playersConnected >= games[player.room].totalPlayers){
 			dealCards(games[player.room]);
 			io.in(player.room).emit('player-setup', games[player.room]);
+			io.in(player.room).emit('game-state', games[player.room].board);
 		}
 	});
 });

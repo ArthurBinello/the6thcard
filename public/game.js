@@ -35,3 +35,21 @@ socket.on('player-setup', game => {
 		hand.appendChild(cardEl);
 	}
 });
+
+socket.on('game-state', board => {
+	for(var i = 0; i < 4; i++){
+		for(var j = 0; j < 6; j++){
+			let card = board[i][j];
+			if(card == null) {
+				card = "";
+			}
+			editCell(i, j, card);
+		}
+	}
+});
+
+function editCell(x, y, value){
+	let row = board.getElementsByTagName("tr")[x];
+	let cell = row.getElementsByTagName("td")[y];
+	cell.innerHTML = value;
+}
