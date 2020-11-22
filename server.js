@@ -87,7 +87,7 @@ io.on('connection', socket => {
 		});
 	});
 	socket.on('start-game', settings => {
-		games[settings.room] = { users : {}, cards : {}, colors : {}, points : {}, totalPlayers : settings.nbPlayers, playersConnected : 0, board : {} };
+		games[settings.room] = { users : {}, cards : {}, colors : {}, points : {}, totalPlayers : settings.nbPlayers, playersConnected : 0, board : {}, round : {} };
 		io.in(settings.room).emit('game-started');
 	});
 
@@ -106,8 +106,13 @@ io.on('connection', socket => {
 			io.in(player.room).emit('game-state', games[player.room].board);
 		}
 	});
-	socket.on('select-card', card => {
-		
+	socket.on('select-card', player => {
+		games[player.room].round[socket.io] = player.card;
+		io.in(player.room).emit('card-played', socket.id);
+		//TODO check if everyone has played
+			//TODO play round
+		//TODO check if game is over
+			//TODO announce winner
 	});
 });
 

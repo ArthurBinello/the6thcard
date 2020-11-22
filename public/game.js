@@ -24,18 +24,25 @@ socket.on('player-setup', game => {
 		if(myID == id){
 			text += ' (you)';
 		}
-		player.appendChild(document.createTextNode(text));
+
+		var name = document.createElement("div");
+		var textName = document.createTextNode(text);
+		name.appendChild(textName);
+		player.appendChild(name);
+		var points = document.createElement("div");
+		var pointsText = document.createTextNode("0");
+		points.appendChild(pointsText);
+		player.appendChild(points);
+		var cardSelect = document.createElement("div");
+		var cardSelectText = document.createTextNode("?");
+		cardSelect.appendChild(cardSelectText);
+		player.appendChild(cardSelect);
+
 		player.setAttribute('id', id);
 		player.setAttribute('class', 'lobbylist ' + game.colors[id]);
 		playerlist.appendChild(player);
 	}
-	for(var card in game.cards[myID]){
-		var cardEl = document.createElement("li");
-		cardEl.appendChild(document.createTextNode(game.cards[myID][card]));
-		cardEl.addEventListener('click', selectCard)
-		// cardEl.setAttribute('onclick', 'selectCard()');
-		hand.appendChild(cardEl);
-	}
+	showCards(game.cards[myID]);
 });
 
 socket.on('game-state', board => {
@@ -50,6 +57,23 @@ socket.on('game-state', board => {
 	}
 });
 
+socket.on('card-played', player => {
+	var cardSelected = document.getElementById(player).childNodes[2];
+	cardSelected.innerHTML = "X";
+});
+
+function showCards(cards){
+	while(hand.firstChild){
+		hand.removeChild(hand.firstChild);
+	}
+	for(var card in cards){
+		var cardEl = document.createElement("li");
+		cardEl.appendChild(document.createTextNode(cards[card]));
+		cardEl.addEventListener('click', selectCard)
+		hand.appendChild(cardEl);
+	}
+}
+
 function editCell(x, y, value){
 	let row = board.getElementsByTagName("tr")[x];
 	let cell = row.getElementsByTagName("td")[y];
@@ -58,5 +82,5 @@ function editCell(x, y, value){
 
 function selectCard(event){
 	var source = event.target || event.srcElement;
-	console.log(source);
+	socket.emit('select-card', {room : room, card : source.innerHTML});
 }
