@@ -32,6 +32,8 @@ socket.on('player-setup', game => {
 	for(var card in game.cards[myID]){
 		var cardEl = document.createElement("li");
 		cardEl.appendChild(document.createTextNode(game.cards[myID][card]));
+		cardEl.addEventListener('click', selectCard)
+		// cardEl.setAttribute('onclick', 'selectCard()');
 		hand.appendChild(cardEl);
 	}
 });
@@ -52,4 +54,9 @@ function editCell(x, y, value){
 	let row = board.getElementsByTagName("tr")[x];
 	let cell = row.getElementsByTagName("td")[y];
 	cell.innerHTML = value;
+}
+
+function selectCard(event){
+	var source = event.target || event.srcElement;
+	console.log(source);
 }

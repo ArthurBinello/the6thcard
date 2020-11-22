@@ -106,6 +106,9 @@ io.on('connection', socket => {
 			io.in(player.room).emit('game-state', games[player.room].board);
 		}
 	});
+	socket.on('select-card', card => {
+		
+	});
 });
 
 function getUserRooms(socket) {

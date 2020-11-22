@@ -94,8 +94,7 @@ function addStartButton(){
 	if(playerlist.getElementsByClassName('lobbylist').length < 2){
 		btn.disabled = true;
 	}
-	btn.setAttribute('onclick', 'startGame()');
-	// btn.onclick = startGame();
+	btn.addEventListener('click', startGame);
 	menu.appendChild(btn);
 }
 
