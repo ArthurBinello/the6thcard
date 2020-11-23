@@ -49,6 +49,7 @@ io.on('connection', socket => {
 		socket.join(player.room);
 		rooms[player.room].users[socket.id] = player.name;
 
+		//TODO error with colors?
 		let color;
 		let colors = [];
 		for(var key in rooms[player.room].colors){
@@ -98,6 +99,7 @@ io.on('connection', socket => {
 		games[player.room].cards[socket.id] = [];
 		games[player.room].colors[socket.id] = player.color;
 		games[player.room].points[socket.id] = 0;
+		games[player.room].round[socket.id] = null;
 		games[player.room].playersConnected++;
 		socket.emit('return-id', socket.id);
 		if(games[player.room].playersConnected >= games[player.room].totalPlayers){
@@ -107,12 +109,44 @@ io.on('connection', socket => {
 		}
 	});
 	socket.on('select-card', player => {
-		games[player.room].round[socket.io] = player.card;
+		games[player.room].round[socket.id] = player.card;
 		io.in(player.room).emit('card-played', socket.id);
-		//TODO check if everyone has played
+
+		var everyonePlayed = true;
+		Object.keys(games[player.room].round).forEach(function(key) {
+			if(games[player.room].round[key] == null){
+				everyonePlayed = false;
+				return;
+			}
+		});
+		if(everyonePlayed){
+			Object.keys(games[player.room].round).forEach(function(key) {
+				var index = games[player.room].cards[key].indexOf(games[player.room].round[key]);
+				games[player.room].cards[key].splice(index, 1);
+				io.to(key).emit('update-hand', games[player.room].cards[key]);
+			});
+			io.in(player.room).emit('reveal-cards', games[player.room].round);
 			//TODO play round
-		//TODO check if game is over
+		}
+
+		var noMoreCards = true;
+		Object.keys(games[player.room].cards).forEach(function(key) {
+			if(games[player.room].cards[key].length > 0){
+				noMoreCards = false;
+				return;
+			}
+		});
+		if(noMoreCards){
+			//TODO verify this works
+			var scores = Objects.keys(games[player.room].points).map(function(key) {
+				return [key, games[player.room].points[key]];
+			});
+			scores.sort(function(first, second) {
+				return second[1] - first[1];
+			});
 			//TODO announce winner
+			//TODO quit game
+		}
 	});
 });
 

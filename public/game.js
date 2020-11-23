@@ -59,7 +59,19 @@ socket.on('game-state', board => {
 
 socket.on('card-played', player => {
 	var cardSelected = document.getElementById(player).childNodes[2];
-	cardSelected.innerHTML = "X";
+	cardSelected.innerHTML = "!";
+});
+
+socket.on('update-hand', hand => {
+	showCards(hand);
+	//TODO disable cards
+});
+
+socket.on('reveal-cards', playedCards => {
+	Object.keys(playedCards).forEach(function(key) {
+		var cardSelected = document.getElementById(key).childNodes[2];
+		cardSelected.innerHTML = playedCards[key];
+	});
 });
 
 function showCards(cards){
@@ -81,6 +93,8 @@ function editCell(x, y, value){
 }
 
 function selectCard(event){
+	//TODO show card selected in html
+	//TODO block if round in progress
 	var source = event.target || event.srcElement;
-	socket.emit('select-card', {room : room, card : source.innerHTML});
+	socket.emit('select-card', {room : room, card : parseInt(source.innerHTML)});
 }

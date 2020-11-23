@@ -22,6 +22,7 @@ socket.on('user-added', user => {
 	you.appendChild(document.createTextNode(user.name));
 	you.setAttribute('id', user.id);
 	you.setAttribute('class', 'lobbylist ' + user.color);
+	sessionStorage.setItem('color', user.color);
 	playerlist.appendChild(you);
 	if(playerlist.getElementsByClassName('lobbylist').length >= 2 && document.getElementById('startGame')){
 		document.getElementById('startGame').disabled = false;
