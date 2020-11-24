@@ -42,14 +42,13 @@ io.on('connection', socket => {
 			let roomList = Object.keys(rooms);
 			socket.broadcast.emit('update-room-list', roomList);
 		}
-		if(Object.keys(rooms[player.room]).length >= 10){
+		if(Object.keys(rooms[player.room].users).length >= 10){
 			socket.emit('full-lobby');
 			return;
 		}
 		socket.join(player.room);
 		rooms[player.room].users[socket.id] = player.name;
 
-		//TODO error with colors?
 		let color;
 		let colors = [];
 		for(var key in rooms[player.room].colors){
@@ -57,7 +56,8 @@ io.on('connection', socket => {
 		}
 		do{
 			color = colorList[Math.floor(Math.random() * colorList.length)];
-		}while(!color in colors);
+		}while(colors.includes(color));
+		console.log(color)
 		rooms[player.room].colors[socket.id] = color;
 
 		if(player.owner == 1){
