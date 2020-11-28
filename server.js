@@ -57,7 +57,6 @@ io.on('connection', socket => {
 		do{
 			color = colorList[Math.floor(Math.random() * colorList.length)];
 		}while(colors.includes(color));
-		console.log(color)
 		rooms[player.room].colors[socket.id] = color;
 
 		if(player.owner == 1){
@@ -126,28 +125,14 @@ io.on('connection', socket => {
 				io.to(key).emit('update-hand', games[player.room].cards[key]);
 			});
 			io.in(player.room).emit('reveal-cards', games[player.room].round);
-			//TODO play round
-		}
 
-		var noMoreCards = true;
-		Object.keys(games[player.room].cards).forEach(function(key) {
-			if(games[player.room].cards[key].length > 0){
-				noMoreCards = false;
-				return;
-			}
-		});
-		if(noMoreCards){
-			//TODO verify this works
-			var scores = Objects.keys(games[player.room].points).map(function(key) {
-				return [key, games[player.room].points[key]];
-			});
-			scores.sort(function(first, second) {
-				return second[1] - first[1];
-			});
-			//TODO announce winner
-			//TODO quit game
+			playRound(player.room);
 		}
 	});
+	socket.on('choose-row', temp => {
+		//TODO calculate play + update
+		playRound(temp.room);
+	})
 });
 
 function getUserRooms(socket) {
@@ -174,6 +159,55 @@ function dealCards(room) {
 	for(var k = 0; k < 4; k++){
 		room.board[k] = [];
 		room.board[k].push(cards.splice(Math.floor(Math.random()*cards.length), 1)[0]);
+	}
+}
+
+function playRound(room) {
+	if(isRoundOver(room)){
+		endRound(room);
+	} else {
+		//TODO play lowest card
+		//TODO test if user has to make a choice
+		if(1){
+			//TODO ask for input
+		} else {
+			//TODO calculate play + update
+			playRound(room);
+		}
+	}
+}
+
+function isRoundOver(room) {
+	let roundOver = true;
+	Object.keys(games[room].round).forEach(function(key) {
+		if(games[room].round[key] != null){
+			roundOver = false;
+			return;
+		}
+	});
+	return roundOver;
+}
+
+function endRound(room) {
+	var noMoreCards = true;
+	Object.keys(games[room].cards).forEach(function(key) {
+		if(games[room].cards[key].length > 0){
+			noMoreCards = false;
+			return;
+		}
+	});
+	if(noMoreCards){
+		//TODO verify this works
+		var scores = Objects.keys(games[room].points).map(function(key) {
+			return [key, games[room].points[key]];
+		});
+		scores.sort(function(first, second) {
+			return second[1] - first[1];
+		});
+		//TODO announce winner
+		//TODO quit game
+	} else {
+		//TODO send info next round
 	}
 }
 
