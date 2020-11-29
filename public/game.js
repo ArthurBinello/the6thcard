@@ -74,6 +74,10 @@ socket.on('reveal-cards', playedCards => {
 	});
 });
 
+socket.on('ask-row-selection', () => {
+	//TODO display row buttons
+})
+
 function showCards(cards){
 	while(hand.firstChild){
 		hand.removeChild(hand.firstChild);

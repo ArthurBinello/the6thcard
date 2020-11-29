@@ -171,7 +171,7 @@ function playRound(room) {
 		let lowestValue = 105;
 		let lowestPlayerID = null;
 		Object.keys(games[room].round).forEach(function(key) {
-			if(games[room].round[key] < lowestValue){
+			if(games[room].round[key] != null && games[room].round[key] < lowestValue){
 				lowestValue = games[room].round[key];
 				lowestPlayerID = key;
 			}
@@ -184,17 +184,37 @@ function playRound(room) {
 			}
 		}
 		if(!isCardPlacable){
-			//TODO ask for input
+			console.log(games[room].board)
+			console.log(games[room].round)
+			console.log(lowestValue)
+			io.to(lowestPlayerID).emit('ask-row-selection');
 		} else {
-			//TODO place card in correct row
-			//TODO test if row is full
-			if(1){
-				//TODO calculate points
-				//TODO update row
+			let row = 0;
+			let closestLowValue = 0;
+			for(let j=0; j<4; j++){
+				rowValue = games[room].board[j][games[room].board[j].length - 1];
+				if(rowValue < lowestValue && rowValue > closestLowValue){
+					closestLowValue = rowValue;
+					row = j;
+				}
 			}
-			//TODO update everyone
+			games[room].board[row][games[room].board[row].length] = lowestValue;
 
-			playRound(room);
+			if(games[room].board[row].length >= 6){
+				//TODO calculate points
+				games[room].points[lowestPlayerID] += 1;
+
+				games[room].board[row][0] = lowestValue;
+				for(k=1; k<6; k++){
+					games[room].board[row][k] = null;
+				}
+			}
+
+			games[room].round[lowestPlayerID] = null;
+			//TODO update point display
+			io.in(room).emit('game-state', games[room].board);
+
+			setTimeout(function(){ playRound(room); }, 1000);
 		}
 	}
 }
