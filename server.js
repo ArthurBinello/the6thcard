@@ -130,7 +130,9 @@ io.on('connection', socket => {
 		}
 	});
 	socket.on('choose-row', temp => {
-		//TODO calculate play + update
+		//TODO calculate points
+		//TODO place card in row
+		//TODO update everyone
 		playRound(temp.room);
 	})
 });
@@ -166,12 +168,32 @@ function playRound(room) {
 	if(isRoundOver(room)){
 		endRound(room);
 	} else {
-		//TODO play lowest card
-		//TODO test if user has to make a choice
-		if(1){
+		let lowestValue = 105;
+		let lowestPlayerID = null;
+		Object.keys(games[room].round).forEach(function(key) {
+			if(games[room].round[key] < lowestValue){
+				lowestValue = games[room].round[key];
+				lowestPlayerID = key;
+			}
+		});
+
+		let isCardPlacable = false;
+		for(let i=0; i<4; i++){
+			if(lowestValue > games[room].board[i][games[room].board[i].length - 1]){
+				isCardPlacable = true;
+			}
+		}
+		if(!isCardPlacable){
 			//TODO ask for input
 		} else {
-			//TODO calculate play + update
+			//TODO place card in correct row
+			//TODO test if row is full
+			if(1){
+				//TODO calculate points
+				//TODO update row
+			}
+			//TODO update everyone
+
 			playRound(room);
 		}
 	}

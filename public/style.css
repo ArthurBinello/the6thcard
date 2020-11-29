@@ -128,16 +128,16 @@ input[type=submit]:focus, button:focus {
 	border: .2rem solid;
 }
 
-.red{border-color: red;}
-.blue{border-color: blue;}
+.red{border-color: crimson;}
+.blue{border-color: royalblue;}
 .yellow{border-color: yellow;}
-.green{border-color: green;}
-.orange{border-color: orangered;}
-.purple{border-color: purple;}
+.green{border-color: forestgreen;}
+.orange{border-color: darkorange;}
+.purple{border-color: mediumpurple;}
 .pink{border-color: hotpink;}
-.brown{border-color: saddlebrown;}
-.aqua{border-color: aqua;}
-.lime{border-color: lime;}
+.brown{border-color: sienna;}
+.aqua{border-color: cyan;}
+.lime{border-color: chartreuse;}
 
 .owner{
 	float: left;
