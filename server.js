@@ -16,6 +16,7 @@ var rooms = {};
 var owners = {};
 var colorList = ['red', 'blue', 'yellow', 'green', 'orange', 'purple', 'pink', 'brown', 'aqua', 'lime'];
 var games = {};
+var pointCards = calculatePoints();
 
 app.get('/', (req, res) => {
 	res.render('mainmenu');
@@ -108,6 +109,9 @@ io.on('connection', socket => {
 		}
 	});
 	socket.on('select-card', player => {
+		if(!games[player.room].cards[socket.id].includes(player.card)){
+			return;
+		}
 		games[player.room].round[socket.id] = player.card;
 		io.in(player.room).emit('card-played', socket.id);
 
@@ -115,7 +119,7 @@ io.on('connection', socket => {
 		Object.keys(games[player.room].round).forEach(function(key) {
 			if(games[player.room].round[key] == null){
 				everyonePlayed = false;
-				return;
+				break;
 			}
 		});
 		if(everyonePlayed){
@@ -184,9 +188,7 @@ function playRound(room) {
 			}
 		}
 		if(!isCardPlacable){
-			console.log(games[room].board)
-			console.log(games[room].round)
-			console.log(lowestValue)
+			io.in(room).emit('who-choosing-row', games[room].users[lowestPlayerID]);
 			io.to(lowestPlayerID).emit('ask-row-selection');
 		} else {
 			let row = 0;
@@ -201,8 +203,11 @@ function playRound(room) {
 			games[room].board[row][games[room].board[row].length] = lowestValue;
 
 			if(games[room].board[row].length >= 6){
-				//TODO calculate points
-				games[room].points[lowestPlayerID] += 1;
+				for(k=1; k<6; k++){
+					if(games[room].board[row][k] != null){
+						games[room].points[lowestPlayerID] += getPoints(games[room].board[row][k]);
+					}
+				}
 
 				games[room].board[row][0] = lowestValue;
 				for(k=1; k<6; k++){
@@ -212,6 +217,7 @@ function playRound(room) {
 
 			games[room].round[lowestPlayerID] = null;
 			//TODO update point display
+			io.in(room).emit('just-played-update', {playerID : lowestPlayerID, points : games[room].points[lowestPlayerID]});
 			io.in(room).emit('game-state', games[room].board);
 
 			setTimeout(function(){ playRound(room); }, 1000);
@@ -224,7 +230,7 @@ function isRoundOver(room) {
 	Object.keys(games[room].round).forEach(function(key) {
 		if(games[room].round[key] != null){
 			roundOver = false;
-			return;
+			break;
 		}
 	});
 	return roundOver;
@@ -251,6 +257,37 @@ function endRound(room) {
 	} else {
 		//TODO send info next round
 	}
+}
+
+function calculatePoints(){
+	var pointCards = {};
+
+	for(let i = 1; i < 105; i++){
+		if(i % 55 == 0){
+			pointCards[i] = 7;
+		}
+		else if(i % 11 == 0){
+			pointCards[i] = 5;
+		}
+		else if(i % 10 == 0){
+			pointCards[i] = 3;
+		}
+		else if(i % 5 == 0){
+			pointCards[i] = 2;
+		} else {
+			pointCards[i] = 1;
+		}
+	}
+	
+	return pointCards;
+}
+
+function getPoints(card){
+	card = parseInt(card, 10);
+	if(card < 1 || card > 104){
+		return 0;
+	}
+	return pointCards[card];
 }
 
 server.listen(port);

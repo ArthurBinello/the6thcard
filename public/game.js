@@ -45,6 +45,12 @@ socket.on('player-setup', game => {
 	showCards(game.cards[myID]);
 });
 
+socket.on('just-played-update', player => {
+	var playerSelected = document.getElementById(player.playerID);
+	playerSelected.childNodes[1].innerHTML = player.points;
+	playerSelected.childNodes[2].innerHTML = "O";
+});
+
 socket.on('game-state', board => {
 	for(var i = 0; i < 4; i++){
 		for(var j = 0; j < 6; j++){
@@ -74,9 +80,14 @@ socket.on('reveal-cards', playedCards => {
 	});
 });
 
+socket.on('who-choosing-row', player => {
+	//TODO notify
+	console.log(player + " is choosing a row");
+});
+
 socket.on('ask-row-selection', () => {
 	//TODO display row buttons
-})
+});
 
 function showCards(cards){
 	while(hand.firstChild){

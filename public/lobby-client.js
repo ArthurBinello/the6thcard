@@ -50,11 +50,13 @@ socket.on('user-list', userlist => {
 });
 
 socket.on('full-lobby', () => {
+	//TODO notify
 	window.alert("The lobby is full.");
 	window.location.href = window.location.protocol + '//' + window.location.host;
 });
 
 socket.on('unknown-room', () => {
+	//TODO notify
 	window.alert("This room doesn't exist.");
 	window.location.href = window.location.protocol + '//' + window.location.host;
 });
@@ -73,6 +75,7 @@ socket.on('user-dc', user => {
 		crown.className = "owner";
 		newOwner.insertBefore(crown, newOwner.firstChild);
 	}
+	//TODO notify
 	window.alert(user.name + " has left the lobby.");
 });
 
