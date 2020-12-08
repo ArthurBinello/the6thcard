@@ -119,7 +119,7 @@ io.on('connection', socket => {
 		Object.keys(games[player.room].round).forEach(function(key) {
 			if(games[player.room].round[key] == null){
 				everyonePlayed = false;
-				break;
+				return;
 			}
 		});
 		if(everyonePlayed){
@@ -130,7 +130,7 @@ io.on('connection', socket => {
 			});
 			io.in(player.room).emit('reveal-cards', games[player.room].round);
 
-			playRound(player.room);
+			setTimeout(function(){ playRound(player.room); }, 1000);
 		}
 	});
 	socket.on('choose-row', temp => {
@@ -230,7 +230,7 @@ function isRoundOver(room) {
 	Object.keys(games[room].round).forEach(function(key) {
 		if(games[room].round[key] != null){
 			roundOver = false;
-			break;
+			return;
 		}
 	});
 	return roundOver;
