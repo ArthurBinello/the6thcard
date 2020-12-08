@@ -133,12 +133,21 @@ io.on('connection', socket => {
 			setTimeout(function(){ playRound(player.room); }, 1000);
 		}
 	});
-	socket.on('choose-row', temp => {
-		//TODO calculate points
-		//TODO place card in row
-		//TODO update everyone
+	socket.on('choose-row', choice => {
+		for(i=1; i<6; i++){
+			if(games[choice.room].board[choice.row][i] != null){
+				games[choice.room].points[choice.id] += getPoints(games[choice.room].board[choice.row][k]);
+				games[choice.room].board[choice.row][k] = null;
+			}
+		}
+		games[choice.room].board[choice.row][0] = games[choice.room].round[choice.id];
+
+		games[choice.room].round[choice.id] = null;
+		io.in(choice.room).emit('just-played-update', {playerID : choice.id, points : games[choice.room].points[choice.id]});
+		io.in(choice.room).emit('game-state', games[choice.room].board);
+
 		playRound(temp.room);
-	})
+	});
 });
 
 function getUserRooms(socket) {
@@ -216,7 +225,6 @@ function playRound(room) {
 			}
 
 			games[room].round[lowestPlayerID] = null;
-			//TODO update point display
 			io.in(room).emit('just-played-update', {playerID : lowestPlayerID, points : games[room].points[lowestPlayerID]});
 			io.in(room).emit('game-state', games[room].board);
 
