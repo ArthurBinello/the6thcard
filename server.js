@@ -252,6 +252,7 @@ function endRound(room) {
 			return;
 		}
 	});
+	//TODO delete '!'
 	if(!noMoreCards){
 		var scores = Object.keys(games[room].points).map(function(key) {
 			return [key, games[room].points[key]];
@@ -259,7 +260,7 @@ function endRound(room) {
 		scores.sort(function(first, second) {
 			return second[1] - first[1];
 		});
-		//TODO send game over info
+		io.in(room).emit('game-over', scores);
 		//TODO delete game
 	} else {
 		//TODO send info next round

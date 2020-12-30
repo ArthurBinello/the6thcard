@@ -98,6 +98,26 @@ socket.on('ask-row-selection', () => {
 	};
 });
 
+socket.on('game-over', scores => {
+	let place = 1;
+	let resultMessage = "";
+	scores.forEach(player => {
+		if(player[0] == myID){
+			if(place == 1){
+				resultMessage = "You won!\n" + resultMessage;
+			} else {
+				resultMessage = "You lost!\n" + resultMessage;
+			}
+		}
+		let currentPlayer = document.getElementById(player[0]).getElementsByTagName('div')[0].innerHTML;
+		resultMessage += place + " - " + currentPlayer + " : " + player[1] + " pts";
+		place++;
+		resultMessage += "\n";
+	});
+	//TODO actually display this
+	console.log(resultMessage);
+});
+
 function showCards(cards){
 	while(hand.firstChild){
 		hand.removeChild(hand.firstChild);
