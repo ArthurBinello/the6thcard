@@ -252,16 +252,15 @@ function endRound(room) {
 			return;
 		}
 	});
-	if(noMoreCards){
-		//TODO verify this works
-		var scores = Objects.keys(games[room].points).map(function(key) {
+	if(!noMoreCards){
+		var scores = Object.keys(games[room].points).map(function(key) {
 			return [key, games[room].points[key]];
 		});
 		scores.sort(function(first, second) {
 			return second[1] - first[1];
 		});
-		//TODO announce winner
-		//TODO quit game
+		//TODO send game over info
+		//TODO delete game
 	} else {
 		//TODO send info next round
 	}

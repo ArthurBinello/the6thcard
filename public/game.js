@@ -1,5 +1,5 @@
 const socket = io('http://localhost:3000');
-var name = sessionStorage.getItem('name');
+var username = sessionStorage.getItem('name');
 var room = sessionStorage.getItem('room');
 var owner = sessionStorage.getItem('owner');
 var color = sessionStorage.getItem('color');
@@ -9,8 +9,15 @@ const content = document.getElementById('content');
 const playerlist = document.getElementById('playerlist');
 const board = document.getElementById('board');
 const hand = document.getElementById('hand');
+const rowButtons = board.getElementsByTagName('button');
+for(let btn of rowButtons){
+	btn.style.visibility = 'hidden';
+	btn.addEventListener('click', function(){
+		selectRow(btn.value);
+	});
+};
 
-socket.emit('connect-game', {name : name, room : room, owner : owner, color : color});
+socket.emit('connect-game', {name : username, room : room, owner : owner, color : color});
 
 socket.on('return-id', IDPlayer => {
 	myID = IDPlayer;
@@ -81,12 +88,14 @@ socket.on('reveal-cards', playedCards => {
 });
 
 socket.on('who-choosing-row', player => {
-	//TODO notify
+	//TODO display this console log
 	console.log(player + " is choosing a row");
 });
 
 socket.on('ask-row-selection', () => {
-	//TODO display row buttons
+	for(let btn of rowButtons){
+		btn.style.visibility = 'visible'
+	};
 });
 
 function showCards(cards){
@@ -112,4 +121,8 @@ function selectCard(event){
 	//TODO block if round in progress
 	var source = event.target || event.srcElement;
 	socket.emit('select-card', {room : room, card : parseInt(source.innerHTML)});
+}
+
+function selectRow(row){
+	//TODO send row selection
 }
