@@ -144,5 +144,8 @@ function selectCard(event){
 }
 
 function selectRow(row){
-	//TODO send row selection
+	for(let btn of rowButtons){
+		btn.style.visibility = 'hidden';
+	};
+	socket.emit('choose-row', {id : myID, room : room, row : row});
 }

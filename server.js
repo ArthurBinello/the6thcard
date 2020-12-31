@@ -134,6 +134,7 @@ io.on('connection', socket => {
 		}
 	});
 	socket.on('choose-row', choice => {
+		games[choice.room].points[choice.id] += getPoints(games[choice.room].board[choice.row][0]);
 		for(i=1; i<6; i++){
 			if(games[choice.room].board[choice.row][i] != null){
 				games[choice.room].points[choice.id] += getPoints(games[choice.room].board[choice.row][k]);
@@ -146,7 +147,7 @@ io.on('connection', socket => {
 		io.in(choice.room).emit('just-played-update', {playerID : choice.id, points : games[choice.room].points[choice.id]});
 		io.in(choice.room).emit('game-state', games[choice.room].board);
 
-		playRound(temp.room);
+		setTimeout(function(){ playRound(choice.room); }, 1000);
 	});
 });
 
