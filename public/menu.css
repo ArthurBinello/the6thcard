@@ -4,7 +4,7 @@ body {
 	display: flex;
 	justify-content: center;
 	font-family: 'Roboto',sans-serif;
-	background-color: #121212;
+	background-color: #1E1E1E;
 	color: #ffffff;
 	padding-top: 2rem;
 	text-align: center;
@@ -14,7 +14,7 @@ body {
 	position: relative;
 	margin: 0 auto;
 	padding: 2rem;
-	background-color: #212121;
+	background-color: #252525;
 	justify-content: center;
 	-webkit-box-shadow: 0 0 10px black;
 	box-shadow: 0 0 10px black;
@@ -75,7 +75,7 @@ input[type=submit]:focus, button:focus {
 #name {
 	padding: 1rem;
 	font-size: 1rem;
-	background-color: #212121;
+	background-color: #252525;
 	color: white;
 	border-style: solid;
 	border-radius: .25rem;
@@ -94,8 +94,8 @@ input[type=submit]:focus, button:focus {
 	transform: translateY(-0.9rem);
 	position: absolute;
 	color: #999999;
-	text-shadow: 1px 0 0 #212121, 2px 0 0 #212121, 3px 0 0 #212121, 4px 0 0 #212121, 5px 0 0 #212121, 6px 0 0 #212121, -1px 0 0 #212121, -2px 0 0 #212121, -3px 0 0 #212121, -4px 0 0 #212121, -5px 0 0 #212121, -6px 0 0 #212121;
-	border: 1px solid #212121;
+	text-shadow: 1px 0 0 #252525, 2px 0 0 #252525, 3px 0 0 #252525, 4px 0 0 #252525, 5px 0 0 #252525, 6px 0 0 #252525, -1px 0 0 #252525, -2px 0 0 #252525, -3px 0 0 #252525, -4px 0 0 #252525, -5px 0 0 #252525, -6px 0 0 #252525;
+	border: 1px solid #252525;
 }
 
 .noselect {
@@ -119,12 +119,12 @@ input[type=submit]:focus, button:focus {
 }
 
 .lobbylist {
-	background-color: #303030;
+	background-color: #333333;
 	padding-top: .5rem;
 	padding-bottom: .5rem;
 	border-radius: .5rem;
 	margin-bottom: .5rem;
-	box-shadow: 0 0 .5rem #121212;
+	box-shadow: 0 0 .5rem #1E1E1E;
 	border: .2rem solid;
 }
 
@@ -156,11 +156,11 @@ input[type=submit]:focus, button:focus {
 }
 
 #leavelobby:hover{
-	background-color: #121212;
-	box-shadow: 0 0 .5rem #121212;
+	background-color: #1E1E1E;
+	box-shadow: 0 0 .5rem #1E1E1E;
 }
 
 #leavelobby:active{
-	background-color: #303030;
-	box-shadow: 0 0 .5rem #121212;
+	background-color: #333333;
+	box-shadow: 0 0 .5rem #1E1E1E;
 }

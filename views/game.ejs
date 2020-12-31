@@ -6,11 +6,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+		<link rel="stylesheet" type="text/css" href="/game.css" />
 		<script defer src="http://localhost:3000/socket.io/socket.io.js"></script>
 		<script defer src="game.js"></script>
 	</head>
 	<body>
-		<p1>Game</p1>
 		<div id="content">
 			<ul id="playerlist"></ul>
 			<table id="board">
@@ -27,6 +27,8 @@
 					<td></td><td></td><td></td><td></td><td></td><td></td><td><button value=3>&lt-</button></td>
 				</tr>
 			</table>
+		</div>
+		<div id="footer">
 			<ul id="hand"></ul>
 		</div>
 	</body>

@@ -253,13 +253,12 @@ function endRound(room) {
 			return;
 		}
 	});
-	//TODO delete '!'
-	if(!noMoreCards){
+	if(noMoreCards){
 		var scores = Object.keys(games[room].points).map(function(key) {
 			return [key, games[room].points[key]];
 		});
 		scores.sort(function(first, second) {
-			return second[1] - first[1];
+			return first[1] -second[1];
 		});
 		io.in(room).emit('game-over', scores);
 		//TODO delete game
