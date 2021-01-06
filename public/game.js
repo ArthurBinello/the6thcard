@@ -147,9 +147,12 @@ function editCell(x, y, value){
 }
 
 function selectCard(event){
-	//TODO clear other cards of selection
-	//TODO show card selected in html
 	var source = event.target || event.srcElement;
+	let cards = hand.children;
+	for(var i = 0; i < cards.length; i++){
+		cards[i].className = '';
+	}
+	source.className = 'selected';
 	socket.emit('select-card', {room : room, card : parseInt(source.innerHTML)});
 }
 
