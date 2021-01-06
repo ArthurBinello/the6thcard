@@ -68,7 +68,7 @@ io.on('connection', socket => {
 		socket.emit('user-list', {room : player.room, names : rooms[player.room].users, colors : rooms[player.room].colors, owner : owners[player.room], you : socket.id});
 	});
 	socket.on('disconnect', () => {
-		//TODO when leaving game
+		//TODO separate leaving during game and during lobby
 		getUserRooms(socket).forEach(room => {
 			if(Object.keys(rooms[room].users).length <= 1){
 				delete owners[room];
@@ -261,9 +261,11 @@ function endRound(room) {
 			return first[1] -second[1];
 		});
 		io.in(room).emit('game-over', scores);
-		//TODO delete game
+		delete games[room];
+		delete owners[room];
+		delete rooms[room];
 	} else {
-		//TODO send info next round
+		io.in(room).emit('new-round');
 	}
 }
 

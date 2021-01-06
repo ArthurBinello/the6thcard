@@ -75,9 +75,12 @@ socket.on('card-played', player => {
 	cardSelected.innerHTML = "!";
 });
 
-socket.on('update-hand', hand => {
-	showCards(hand);
-	//TODO disable cards
+socket.on('update-hand', newHand => {
+	showCards(newHand);
+	let cards = hand.children;
+	for(var i = 0; i < cards.length; i++){
+		cards[i].removeEventListener('click', selectCard);
+	}
 });
 
 socket.on('reveal-cards', playedCards => {
@@ -118,6 +121,13 @@ socket.on('game-over', scores => {
 	console.log(resultMessage);
 });
 
+socket.on('new-round', () => {
+	let cards = hand.children;
+	for(var i = 0; i < cards.length; i++){
+		cards[i].addEventListener('click', selectCard);
+	}
+});
+
 function showCards(cards){
 	while(hand.firstChild){
 		hand.removeChild(hand.firstChild);
@@ -125,7 +135,7 @@ function showCards(cards){
 	for(var card in cards){
 		var cardEl = document.createElement("li");
 		cardEl.appendChild(document.createTextNode(cards[card]));
-		cardEl.addEventListener('click', selectCard)
+		cardEl.addEventListener('click', selectCard);
 		hand.appendChild(cardEl);
 	}
 }
@@ -137,8 +147,8 @@ function editCell(x, y, value){
 }
 
 function selectCard(event){
+	//TODO clear other cards of selection
 	//TODO show card selected in html
-	//TODO block if round in progress
 	var source = event.target || event.srcElement;
 	socket.emit('select-card', {room : room, card : parseInt(source.innerHTML)});
 }
