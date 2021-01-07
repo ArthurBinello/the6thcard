@@ -11,6 +11,7 @@ const playerlist = document.getElementById('playerlist');
 const board = document.getElementById('board');
 const hand = document.getElementById('hand');
 const rowButtons = board.getElementsByTagName('button');
+const info = document.getElementById('info');
 for(let btn of rowButtons){
 	btn.style.visibility = 'hidden';
 	btn.addEventListener('click', function(){
@@ -56,6 +57,11 @@ socket.on('player-setup', game => {
 
 socket.on('just-played-update', player => {
 	var playerSelected = document.getElementById(player.playerID);
+	var oldPoints = playerSelected.childNodes[1].innerHTML;
+	if(oldPoints < player.points){
+		let pointsDiff = player.points-oldPoints;
+		showInfo(playerSelected.childNodes[0].innerHTML + " has gained " + pointsDiff + " points.", player.color);
+	}
 	playerSelected.childNodes[1].innerHTML = player.points;
 	playerSelected.childNodes[2].innerHTML = "O";
 });
@@ -93,8 +99,7 @@ socket.on('reveal-cards', playedCards => {
 });
 
 socket.on('who-choosing-row', player => {
-	//TODO notify
-	console.log(player + " is choosing a row");
+	showInfo(player.name + " is choosing a row.", player.color);
 });
 
 socket.on('ask-row-selection', () => {
@@ -119,11 +124,12 @@ socket.on('game-over', scores => {
 		place++;
 		resultMessage += "\n";
 	});
-	//TODO notify
+	//TODO display in new div
 	console.log(resultMessage);
 });
 
 socket.on('new-round', () => {
+	showInfo("A new round is starting.", "");
 	let cards = hand.children;
 	for(var i = 0; i < cards.length; i++){
 		cards[i].addEventListener('click', selectCard);
@@ -164,4 +170,16 @@ function selectRow(row){
 		btn.style.visibility = 'hidden';
 	};
 	socket.emit('choose-row', {id : myID, room : room, row : row});
+}
+
+function showInfo(msg, color){
+	info.innerHTML = msg;
+	if(color == "" || color == null){
+		color = "neutral";
+	}
+	info.className = color;
+	info.style.visibility = "visible";
+	setTimeout(function(){
+		info.style.visibility = "hidden";
+	}, 5000);
 }

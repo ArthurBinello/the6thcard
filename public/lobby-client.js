@@ -22,7 +22,6 @@ socket.on('user-added', user => {
 	you.appendChild(document.createTextNode(user.name));
 	you.setAttribute('id', user.id);
 	you.setAttribute('class', 'lobbylist ' + user.color);
-	sessionStorage.setItem('color', user.color);
 	playerlist.appendChild(you);
 	if(playerlist.getElementsByClassName('lobbylist').length >= 2 && document.getElementById('startGame')){
 		document.getElementById('startGame').disabled = false;
@@ -35,6 +34,7 @@ socket.on('user-list', userlist => {
 		let text = userlist.names[id];
 		if(id == userlist.you){
 			text += ' (you)';
+			sessionStorage.setItem('color', userlist.colors[id]);
 		}
 		if(id == userlist.owner){
 			let crown = document.createElement("div");
@@ -90,7 +90,6 @@ socket.on('game-started', () => {
 	window.location.href = window.location.protocol + '//' + window.location.host + '/game';
 });
 function addStartButton(){
-	//TODO make button do something
 	let menu = document.getElementById("menu");
 	let btn = document.createElement("BUTTON");
 	btn.innerHTML = 'Start Game';

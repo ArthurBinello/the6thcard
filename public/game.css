@@ -59,3 +59,24 @@ body {
 .selected{
     color: red;
 }
+
+#info{
+    position: fixed;
+    right: 0;
+    z-index: 10;
+    visibility: hidden;
+	border-style: solid;
+    border-radius: .25rem;
+}
+
+.red{border-color: crimson;}
+.blue{border-color: royalblue;}
+.yellow{border-color: yellow;}
+.green{border-color: forestgreen;}
+.orange{border-color: darkorange;}
+.purple{border-color: mediumpurple;}
+.pink{border-color: hotpink;}
+.brown{border-color: sienna;}
+.aqua{border-color: cyan;}
+.lime{border-color: chartreuse;}
+.neutral{border-color: #333333;}

@@ -75,7 +75,7 @@ io.on('connection', socket => {
 				delete rooms[room];
 				let roomList = Object.keys(rooms);
 				socket.broadcast.emit('update-room-list', roomList);
-			}else{
+			} else {
 				while(owners[room] == socket.id){
 					let keys = Object.keys(rooms[room].users);
 					owners[room] = keys[keys.length * Math.random() << 0];
@@ -134,17 +134,16 @@ io.on('connection', socket => {
 		}
 	});
 	socket.on('choose-row', choice => {
-		games[choice.room].points[choice.id] += getPoints(games[choice.room].board[choice.row][0]);
-		for(i=1; i<6; i++){
+		for(i=0; i<6; i++){
 			if(games[choice.room].board[choice.row][i] != null){
-				games[choice.room].points[choice.id] += getPoints(games[choice.room].board[choice.row][k]);
-				games[choice.room].board[choice.row][k] = null;
+				games[choice.room].points[choice.id] += getPoints(games[choice.room].board[choice.row][i]);
+				games[choice.room].board[choice.row][i] = null;
 			}
 		}
 		games[choice.room].board[choice.row][0] = games[choice.room].round[choice.id];
 
 		games[choice.room].round[choice.id] = null;
-		io.in(choice.room).emit('just-played-update', {playerID : choice.id, points : games[choice.room].points[choice.id]});
+		io.in(choice.room).emit('just-played-update', {playerID : choice.id, points : games[choice.room].points[choice.id], color : games[choice.room].colors[choice.id]});
 		io.in(choice.room).emit('game-state', games[choice.room].board);
 
 		setTimeout(function(){ playRound(choice.room); }, 1000);
@@ -198,7 +197,7 @@ function playRound(room) {
 			}
 		}
 		if(!isCardPlacable){
-			io.in(room).emit('who-choosing-row', games[room].users[lowestPlayerID]);
+			io.in(room).emit('who-choosing-row', {name : games[room].users[lowestPlayerID], color : games[room].colors[lowestPlayerID]});
 			io.to(lowestPlayerID).emit('ask-row-selection');
 		} else {
 			let row = 0;
@@ -226,7 +225,7 @@ function playRound(room) {
 			}
 
 			games[room].round[lowestPlayerID] = null;
-			io.in(room).emit('just-played-update', {playerID : lowestPlayerID, points : games[room].points[lowestPlayerID]});
+			io.in(room).emit('just-played-update', {playerID : lowestPlayerID, points : games[room].points[lowestPlayerID], color : games[room].colors[lowestPlayerID]});
 			io.in(room).emit('game-state', games[room].board);
 
 			setTimeout(function(){ playRound(room); }, 1000);
