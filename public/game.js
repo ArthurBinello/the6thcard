@@ -4,6 +4,7 @@ var room = sessionStorage.getItem('room');
 var owner = sessionStorage.getItem('owner');
 var color = sessionStorage.getItem('color');
 var myID;
+var pointCards;
 
 const content = document.getElementById('content');
 const playerlist = document.getElementById('playerlist');
@@ -19,8 +20,9 @@ for(let btn of rowButtons){
 
 socket.emit('connect-game', {name : username, room : room, owner : owner, color : color});
 
-socket.on('return-id', IDPlayer => {
-	myID = IDPlayer;
+socket.on('return-id', info => {
+	myID = info.IDPlayer;
+	pointCards = info.pointValues;
 	sessionStorage.setItem('id', myID);
 });
 
@@ -91,7 +93,7 @@ socket.on('reveal-cards', playedCards => {
 });
 
 socket.on('who-choosing-row', player => {
-	//TODO display this console log
+	//TODO notify
 	console.log(player + " is choosing a row");
 });
 
@@ -117,7 +119,7 @@ socket.on('game-over', scores => {
 		place++;
 		resultMessage += "\n";
 	});
-	//TODO actually display this
+	//TODO notify
 	console.log(resultMessage);
 });
 
@@ -135,6 +137,7 @@ function showCards(cards){
 	for(var card in cards){
 		var cardEl = document.createElement("li");
 		cardEl.appendChild(document.createTextNode(cards[card]));
+		cardEl.className = pointCards[cards[card]] + "pts";
 		cardEl.addEventListener('click', selectCard);
 		hand.appendChild(cardEl);
 	}
@@ -150,9 +153,9 @@ function selectCard(event){
 	var source = event.target || event.srcElement;
 	let cards = hand.children;
 	for(var i = 0; i < cards.length; i++){
-		cards[i].className = '';
+		cards[i].className = cards[i].className.replace(/ selected/g, "");
 	}
-	source.className = 'selected';
+	source.className += ' selected';
 	socket.emit('select-card', {room : room, card : parseInt(source.innerHTML)});
 }
 

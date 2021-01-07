@@ -101,7 +101,7 @@ io.on('connection', socket => {
 		games[player.room].points[socket.id] = 0;
 		games[player.room].round[socket.id] = null;
 		games[player.room].playersConnected++;
-		socket.emit('return-id', socket.id);
+		socket.emit('return-id', {IDPlayer : socket.id, pointValues : pointCards});
 		if(games[player.room].playersConnected >= games[player.room].totalPlayers){
 			dealCards(games[player.room]);
 			io.in(player.room).emit('player-setup', games[player.room]);
