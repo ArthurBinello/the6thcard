@@ -19,6 +19,9 @@ for(let btn of rowButtons){
 	});
 };
 
+//TODO prevent reloading
+//TODO redirect if direct access
+
 socket.emit('connect-game', {name : username, room : room, owner : owner, color : color});
 
 socket.on('return-id', info => {
@@ -62,6 +65,7 @@ socket.on('just-played-update', player => {
 		let pointsDiff = player.points-oldPoints;
 		showInfo(playerSelected.childNodes[0].innerHTML + " has gained " + pointsDiff + " points.", player.color);
 	}
+	//TODO real display
 	playerSelected.childNodes[1].innerHTML = player.points;
 	playerSelected.childNodes[2].innerHTML = "O";
 });
@@ -80,6 +84,7 @@ socket.on('game-state', board => {
 
 socket.on('card-played', player => {
 	var cardSelected = document.getElementById(player).childNodes[2];
+	//TODO real thing
 	cardSelected.innerHTML = "!";
 });
 
@@ -94,7 +99,13 @@ socket.on('update-hand', newHand => {
 socket.on('reveal-cards', playedCards => {
 	Object.keys(playedCards).forEach(function(key) {
 		var cardSelected = document.getElementById(key).childNodes[2];
+		//TODO show value
 		cardSelected.innerHTML = playedCards[key];
+	});
+
+	let cards = hand.getElementsByTagName("li");
+	Array.prototype.forEach.call(cards, function(card) {
+		card.style.cursor = 'not-allowed';
 	});
 });
 
@@ -133,6 +144,7 @@ socket.on('new-round', () => {
 	let cards = hand.children;
 	for(var i = 0; i < cards.length; i++){
 		cards[i].addEventListener('click', selectCard);
+		cards[i].style.cursor = 'pointer';
 	}
 });
 

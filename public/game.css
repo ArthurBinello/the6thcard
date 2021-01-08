@@ -45,19 +45,32 @@ body {
 }
 
 #hand{
-    display: inline-block;
+    /* display: inline-block; */
     padding: 0;
     margin: 0;
-    list-style: none;
+    /* list-style: none; */
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
 #hand li{
-    float: left;
-    margin: 1rem;
+    display: inline-block;
+    color: black;
+    font-size: 2rem;
+    margin: .5rem;
+    margin-top: 1rem;
+    background-color: #999999;
+    border-radius: .5rem;
+    padding: 2.5rem;
+    text-align: center;
+	-webkit-box-shadow: 0 0 10px black;
+    box-shadow: 0 0 10px black;
+    cursor: pointer;
 }
 
 .selected{
-    color: red;
+    margin-top: .5rem;
+    border: .2rem solid red;
 }
 
 #info{
