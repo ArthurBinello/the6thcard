@@ -75,11 +75,13 @@ body {
 
 #info{
     position: fixed;
-    right: 0;
+	font-size: larger;
+    right: 2rem;
     z-index: 10;
     visibility: hidden;
 	border-style: solid;
     border-radius: .25rem;
+    padding: 2rem;
 }
 
 .red{border-color: crimson;}
