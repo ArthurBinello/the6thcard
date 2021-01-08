@@ -164,3 +164,12 @@ input[type=submit]:focus, button:focus {
 	background-color: #333333;
 	box-shadow: 0 0 .5rem #1E1E1E;
 }
+
+#info{
+    position: fixed;
+    right: 0;
+    z-index: 10;
+    visibility: hidden;
+	border-style: solid;
+    border-radius: .25rem;
+}

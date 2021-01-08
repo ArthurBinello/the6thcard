@@ -81,7 +81,7 @@ io.on('connection', socket => {
 					owners[room] = keys[keys.length * Math.random() << 0];
 				}
 				io.sockets.to(owners[room]).emit('ownership');
-				socket.to(room).broadcast.emit('user-dc', {id : socket.id, name : rooms[room].users[socket.id], owner : owners[room]});
+				socket.to(room).broadcast.emit('user-dc', {id : socket.id, name : rooms[room].users[socket.id], color : rooms[room].colors[socket.id], owner : owners[room], ownerName : rooms[room].users[owners[room]], ownerColor : rooms[room].colors[owners[room]]});
 				delete rooms[room].users[socket.id];
 				delete rooms[room].colors[socket.id];
 			}

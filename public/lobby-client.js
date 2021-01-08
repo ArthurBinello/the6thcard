@@ -4,6 +4,8 @@ var room = sessionStorage.getItem('room');
 var owner = sessionStorage.getItem('owner');
 const playerlist = document.getElementById('playerlist');
 const roomCode = document.getElementById("roomcode");
+const info = document.getElementById('info');
+var nbActiveNotification = 0;
 
 if(owner == 1){
 	addStartButton();
@@ -26,6 +28,7 @@ socket.on('user-added', user => {
 	if(playerlist.getElementsByClassName('lobbylist').length >= 2 && document.getElementById('startGame')){
 		document.getElementById('startGame').disabled = false;
 	}
+	showInfo(user.name + " has joined the lobby.", user.color);
 });
 
 socket.on('user-list', userlist => {
@@ -50,13 +53,11 @@ socket.on('user-list', userlist => {
 });
 
 socket.on('full-lobby', () => {
-	//TODO notify
 	window.alert("The lobby is full.");
 	window.location.href = window.location.protocol + '//' + window.location.host;
 });
 
 socket.on('unknown-room', () => {
-	//TODO notify
 	window.alert("This room doesn't exist.");
 	window.location.href = window.location.protocol + '//' + window.location.host;
 });
@@ -67,6 +68,8 @@ socket.on('user-dc', user => {
 	if(playerlist.getElementsByClassName('lobbylist').length < 2 && document.getElementById('startGame')){
 		document.getElementById('startGame').disabled = true;
 	}
+	showInfo(user.name + " has left the lobby.", user.color);
+
 	let newOwner = document.getElementById(user.owner);
 	let ownersList = document.getElementsByClassName('owner');
 	if(ownersList.length <= 0){
@@ -74,9 +77,10 @@ socket.on('user-dc', user => {
 		crown.innerHTML = '👑';
 		crown.className = "owner";
 		newOwner.insertBefore(crown, newOwner.firstChild);
+		setTimeout(function(){
+			showInfo(user.ownerName + " is the new owner.", user.ownerColor);
+		}, 3000);
 	}
-	//TODO notify
-	window.alert(user.name + " has left the lobby.");
 });
 
 socket.on('ownership', () => {
@@ -104,4 +108,20 @@ function addStartButton(){
 function startGame(){
 	let nbPlayers = playerlist.getElementsByClassName('lobbylist').length;
 	socket.emit('start-game', {room  : room, nbPlayers : nbPlayers});
+}
+
+function showInfo(msg, color){
+	nbActiveNotification++;
+	info.innerHTML = msg;
+	if(color == "" || color == null){
+		color = "neutral";
+	}
+	info.className = color;
+	info.style.visibility = "visible";
+	setTimeout(function(){
+		nbActiveNotification--;
+		if(nbActiveNotification < 1){
+			info.style.visibility = "hidden";
+		}
+	}, 5000);
 }
