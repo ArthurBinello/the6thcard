@@ -4,84 +4,125 @@ body {
 	font-family: 'Roboto',sans-serif;
 	background-color: #1E1E1E;
 	color: #ffffff;
-    min-height: 100%;
-    height: 100%;
+	min-height: 100%;
+	height: 100%;
 }
 
 #content{
-    min-height: 100%;
+	min-height: 100%;
+	margin: -10rem;
 }
 
+body > #content {
+	padding: 10rem;
+}
+
+/* TODO fix overflow when scrolling */
 #playerlist{
-    background-color: #252525;
-    margin: 0;
-    padding: 0;
-    width: 10rem;
-    bottom: 10rem;
-    float: left;
-    position:absolute;
-    top: 0;
-    bottom:0;
+	background-color: #252525;
+	margin: 0;
+	padding: 0;
+	width: 10vw;
+	float: left;
+	position:absolute;
+	top: 0;
+	bottom:0;
 	-webkit-box-shadow: 0 0 10px black;
 	box-shadow: 0 0 10px black;
 }
 
 #board{
-    position: relative;
-    left: 10rem;
+	border-collapse:separate; 
+	border-spacing: 1rem 3rem;
+	position: relative;
+	left: 10vw;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#board td{
+	color: black;
+	font-size: 2rem;
+	margin: .5rem;
+	margin-top: 1rem;
+	border-radius: .5rem;
+	padding: 2.5rem;
+	text-align: center;
+}
+
+.placedCard{
+	background-color: #999999;
+	-webkit-box-shadow: 0 0 10px black;
+	box-shadow: 0 0 10px black;
+}
+
+#board button{
+	margin: 0;
+	font-size: xx-large;
+	font-weight: 900;
+	color: white;
+	background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+	cursor: pointer;
+}
+
+#board button:hover{
+	color: #999999;
 }
 
 #footer{
-    background-color: #252525;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    height: 10rem;
-    position: fixed;
-    bottom: 0;
-    text-align: center;
+	background-color: #252525;
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	height: 10rem;
+	position: fixed;
+	bottom: 0;
+	text-align: center;
 	-webkit-box-shadow: 0 0 10px black;
 	box-shadow: 0 0 10px black;
 }
 
 #hand{
-    /* display: inline-block; */
-    padding: 0;
-    margin: 0;
-    /* list-style: none; */
-    overflow-x: auto;
-    white-space: nowrap;
+	padding: 0;
+	margin: 0;
+	overflow-x: auto;
+	white-space: nowrap;
 }
 
 #hand li{
-    display: inline-block;
-    color: black;
-    font-size: 2rem;
-    margin: .5rem;
-    margin-top: 1rem;
-    background-color: #999999;
-    border-radius: .5rem;
-    padding: 2.5rem;
-    text-align: center;
+	display: inline-block;
+	color: black;
+	font-size: 2rem;
+	margin: .5rem;
+	margin-top: 1rem;
+	background-color: #999999;
+	border-radius: .5rem;
+	padding: 2.5rem;
+	text-align: center;
 	-webkit-box-shadow: 0 0 10px black;
-    box-shadow: 0 0 10px black;
-    cursor: pointer;
+	box-shadow: 0 0 10px black;
+	cursor: pointer;
 }
 
 .selected{
-    margin-top: .5rem;
-    border: .2rem solid red;
+	margin-top: .5rem;
+	border: .2rem solid red;
 }
 
 #info{
-    position: fixed;
+	position: fixed;
 	font-size: larger;
-    right: 2rem;
-    z-index: 10;
-    visibility: hidden;
+	right: 2rem;
+	z-index: 10;
+	visibility: hidden;
 	border-style: solid;
-    border-radius: .25rem;
-    padding: 2rem;
+	border-radius: .25rem;
+	padding: 2rem;
 }
 
 .red{border-color: crimson;}

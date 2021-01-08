@@ -177,6 +177,7 @@ function dealCards(room) {
 	}
 }
 
+//TODO errors when placing cards
 function playRound(room) {
 	if(isRoundOver(room)){
 		endRound(room);

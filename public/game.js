@@ -165,6 +165,11 @@ function editCell(x, y, value){
 	let row = board.getElementsByTagName("tr")[x];
 	let cell = row.getElementsByTagName("td")[y];
 	cell.innerHTML = value;
+	if(value == ""){
+		cell.className = "";
+	} else {
+		cell.className = "placedCard";
+	}
 }
 
 function selectCard(event){
