@@ -117,6 +117,7 @@ body > #content {
 #info{
 	position: fixed;
 	font-size: larger;
+	top: 2rem;
 	right: 2rem;
 	z-index: 10;
 	visibility: hidden;

@@ -137,10 +137,9 @@ io.on('connection', socket => {
 		for(i=0; i<6; i++){
 			if(games[choice.room].board[choice.row][i] != null){
 				games[choice.room].points[choice.id] += getPoints(games[choice.room].board[choice.row][i]);
-				games[choice.room].board[choice.row][i] = null;
 			}
 		}
-		games[choice.room].board[choice.row][0] = games[choice.room].round[choice.id];
+		games[choice.room].board[choice.row] = [games[choice.room].round[choice.id]];
 
 		games[choice.room].round[choice.id] = null;
 		io.in(choice.room).emit('just-played-update', {playerID : choice.id, points : games[choice.room].points[choice.id], color : games[choice.room].colors[choice.id]});
@@ -179,6 +178,7 @@ function dealCards(room) {
 
 //TODO errors when placing cards
 function playRound(room) {
+	// console.log(games[room].board);
 	if(isRoundOver(room)){
 		endRound(room);
 	} else {
@@ -219,10 +219,7 @@ function playRound(room) {
 					}
 				}
 
-				games[room].board[row][0] = lowestValue;
-				for(k=1; k<6; k++){
-					games[room].board[row][k] = null;
-				}
+				games[room].board[row] = [lowestValue];
 			}
 
 			games[room].round[lowestPlayerID] = null;
