@@ -5,7 +5,6 @@ var owner = sessionStorage.getItem('owner');
 var color = sessionStorage.getItem('color');
 var myID;
 var pointCards;
-var nbActiveNotification = 0;
 
 const content = document.getElementById('content');
 const playerlist = document.getElementById('playerlist');
@@ -111,7 +110,6 @@ socket.on('reveal-cards', playedCards => {
 });
 
 socket.on('who-choosing-row', player => {
-	//TODO not showing?
 	showInfo(player.name + " is choosing a row.", player.color);
 });
 
@@ -192,17 +190,15 @@ function selectRow(row){
 }
 
 function showInfo(msg, color){
-	nbActiveNotification++;
-	info.innerHTML = msg;
+	let li = document.createElement('li');
+	li.textContent = msg;
+	li.className = color;
 	if(color == "" || color == null){
 		color = "neutral";
 	}
 	info.className = color;
-	info.style.visibility = "visible";
+	info.appendChild(li);
 	setTimeout(function(){
-		nbActiveNotification--;
-		if(nbActiveNotification < 1){
-			info.style.visibility = "hidden";
-		}
-	}, 5000);
+		info.removeChild(li);
+	}, 50000);
 }

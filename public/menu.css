@@ -168,10 +168,15 @@ input[type=submit]:focus, button:focus {
 #info{
 	position: fixed;
 	font-size: larger;
-    right: 2rem;
-    z-index: 10;
-    visibility: hidden;
+	top: .1rem;
+	right: 2rem;
+	z-index: 10;
+	list-style-type: none;
+}
+
+#info li{
+	margin-top: 1rem;
 	border-style: solid;
-    border-radius: .25rem;
-    padding: 2rem;
+	border-radius: .5rem;
+	padding: 1rem;
 }

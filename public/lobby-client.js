@@ -5,7 +5,6 @@ var owner = sessionStorage.getItem('owner');
 const playerlist = document.getElementById('playerlist');
 const roomCode = document.getElementById("roomcode");
 const info = document.getElementById('info');
-var nbActiveNotification = 0;
 
 if(owner == 1){
 	addStartButton();
@@ -111,17 +110,15 @@ function startGame(){
 }
 
 function showInfo(msg, color){
-	nbActiveNotification++;
-	info.innerHTML = msg;
+	let li = document.createElement('li');
+	li.textContent = msg;
+	li.className = color;
 	if(color == "" || color == null){
 		color = "neutral";
 	}
 	info.className = color;
-	info.style.visibility = "visible";
+	info.appendChild(li);
 	setTimeout(function(){
-		nbActiveNotification--;
-		if(nbActiveNotification < 1){
-			info.style.visibility = "hidden";
-		}
-	}, 5000);
+		info.removeChild(li);
+	}, 50000);
 }

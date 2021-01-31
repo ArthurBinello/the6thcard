@@ -117,13 +117,17 @@ body > #content {
 #info{
 	position: fixed;
 	font-size: larger;
-	top: 2rem;
+	top: .1rem;
 	right: 2rem;
 	z-index: 10;
-	visibility: hidden;
+	list-style-type: none;
+}
+
+#info li{
+	margin-top: 1rem;
 	border-style: solid;
-	border-radius: .25rem;
-	padding: 2rem;
+	border-radius: .5rem;
+	padding: 1rem;
 }
 
 .red{border-color: crimson;}
