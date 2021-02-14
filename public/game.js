@@ -168,7 +168,7 @@ function editCell(x, y, value){
 	if(value == ""){
 		cell.className = "";
 	} else {
-		cell.className = "placedCard";
+		cell.className = "placedCard " + pointCards[value] + "pts";
 	}
 }
 
