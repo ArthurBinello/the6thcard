@@ -114,7 +114,12 @@ socket.on('reveal-cards', playedCards => {
 });
 
 socket.on('who-choosing-row', player => {
-	showInfo(player.name + " is choosing a row.", player.color);
+	text = player.name
+	if(myID == player.id){
+		text += ' (you)';
+	}
+	text += " is choosing a row."
+	showInfo(text, player.color);
 });
 
 socket.on('ask-row-selection', () => {

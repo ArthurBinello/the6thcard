@@ -1,5 +1,5 @@
 //TODO list:
-//- board too big with 5 columns
+//- board too big with 5 columns (+ center)
 //- no victory screen
 //- no (you) when choosing a row
 //- game info notification color
@@ -216,7 +216,7 @@ function playRound(room) {
 			}
 		}
 		if(!isCardPlacable){
-			io.in(room).emit('who-choosing-row', {name : games[room].users[lowestPlayerID], color : games[room].colors[lowestPlayerID]});
+			io.in(room).emit('who-choosing-row', {name : games[room].users[lowestPlayerID], id: lowestPlayerID, color : games[room].colors[lowestPlayerID]});
 			io.to(lowestPlayerID).emit('ask-row-selection');
 		} else {
 			let row = 0;
