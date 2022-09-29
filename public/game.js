@@ -21,13 +21,17 @@ for(let btn of rowButtons){
 
 //TODO prevent reloading
 //TODO redirect if direct access
-
 socket.emit('connect-game', {name : username, room : room, owner : owner, color : color});
 
 socket.on('return-id', info => {
 	myID = info.IDPlayer;
 	pointCards = info.pointValues;
 	sessionStorage.setItem('id', myID);
+});
+
+socket.on('unknown-room', () => {
+	window.alert("This room doesn't exist.");
+	window.location.href = window.location.protocol + '//' + window.location.host;
 });
 
 socket.on('player-setup', game => {
@@ -200,5 +204,5 @@ function showInfo(msg, color){
 	info.appendChild(li);
 	setTimeout(function(){
 		info.removeChild(li);
-	}, 50000);
+	}, 5000);
 }

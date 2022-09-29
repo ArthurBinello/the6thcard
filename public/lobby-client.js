@@ -120,5 +120,5 @@ function showInfo(msg, color){
 	info.appendChild(li);
 	setTimeout(function(){
 		info.removeChild(li);
-	}, 50000);
+	}, 5000);
 }

@@ -1,15 +1,13 @@
 //TODO list:
 //- board too big with 5 columns
-//- games[player.room].users[socket.id] = player.name;
-//						^
-//	TypeError: Cannot read property 'users' of undefined 
 //- no victory screen
 //- no (you) when choosing a row
 //- game info notification color
-//- notification not going away
 //- left menu appearance
 //- card size not consistent
 //- change arrows with images
+//- Add bug report button
+//- Add 404 page
 
 const port = 6969;
 var express = require('express');
@@ -80,6 +78,7 @@ io.on('connection', socket => {
 		socket.to(player.room).broadcast.emit('user-added', {room : player.room, id : socket.id, name : player.name, color : color, owner : player.owner});
 		socket.emit('user-list', {room : player.room, names : rooms[player.room].users, colors : rooms[player.room].colors, owner : owners[player.room], you : socket.id});
 	});
+
 	socket.on('disconnect', () => {
 		//TODO separate leaving during game and during lobby
 		getUserRooms(socket).forEach(room => {
@@ -100,6 +99,7 @@ io.on('connection', socket => {
 			}
 		});
 	});
+
 	socket.on('start-game', settings => {
 		games[settings.room] = { users : {}, cards : {}, colors : {}, points : {}, totalPlayers : settings.nbPlayers, playersConnected : 0, board : {}, round : {} };
 		io.in(settings.room).emit('game-started');
@@ -107,6 +107,10 @@ io.on('connection', socket => {
 
 	//game
 	socket.on('connect-game', player => {
+		if(games[player.room] == null){
+			socket.emit('unknown-room');
+			return;
+		}
 		socket.join(player.room);
 		games[player.room].users[socket.id] = player.name;
 		games[player.room].cards[socket.id] = [];
@@ -121,6 +125,7 @@ io.on('connection', socket => {
 			io.in(player.room).emit('game-state', games[player.room].board);
 		}
 	});
+
 	socket.on('select-card', player => {
 		if(!games[player.room].cards[socket.id].includes(player.card)){
 			return;
@@ -146,6 +151,7 @@ io.on('connection', socket => {
 			setTimeout(function(){ playRound(player.room); }, 1000);
 		}
 	});
+
 	socket.on('choose-row', choice => {
 		for(i=0; i<6; i++){
 			if(games[choice.room].board[choice.row][i] != null){
@@ -191,7 +197,6 @@ function dealCards(room) {
 
 //TODO errors when placing cards
 function playRound(room) {
-	// console.log(games[room].board);
 	if(isRoundOver(room)){
 		endRound(room);
 	} else {
