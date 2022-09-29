@@ -1,3 +1,14 @@
+//TODO list:
+//- board too big with 5 columns
+//- games[player.room].users[socket.id] = player.name;
+//						^
+//	TypeError: Cannot read property 'users' of undefined 
+//- no victory screen
+//- no (you) when choosing a row
+//- game info notification color
+//- notification not going away
+//- left menu appearance
+
 const port = 6969;
 var express = require('express');
 // var path = require('path');
