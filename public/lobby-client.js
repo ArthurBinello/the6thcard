@@ -92,6 +92,7 @@ socket.on('ownership', () => {
 socket.on('game-started', () => {
 	window.location.href = window.location.protocol + '//' + window.location.host + '/game';
 });
+
 function addStartButton(){
 	let menu = document.getElementById("menu");
 	let btn = document.createElement("BUTTON");

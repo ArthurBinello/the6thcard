@@ -3,7 +3,7 @@
 ## About
 
 Game inspired by the popular card game 6 nimmt!  
-The 6th card was made using node.js, express and socket.io.  
+6th atom was made using node.js, express and socket.io.  
 
 ## Quick start
 

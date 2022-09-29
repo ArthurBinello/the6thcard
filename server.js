@@ -1,13 +1,11 @@
 //TODO list:
 //- board too big with 5 columns (+ center)
 //- no victory screen
-//- no (you) when choosing a row
 //- game info notification color
 //- left menu appearance
 //- card size not consistent
-//- change arrows with images
 //- Add bug report button
-//- Add 404 page
+//- Add favicon
 
 const port = 6969;
 var express = require('express');
@@ -40,6 +38,9 @@ app.get('/lobby', (req, res) => {
 });
 app.get('/game', (req, res) => {
 	res.render('game');
+});
+app.get('*', (req, res) => {
+	res.render('404');
 });
 
 io.on('connection', socket => {
