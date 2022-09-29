@@ -8,6 +8,8 @@
 //- game info notification color
 //- notification not going away
 //- left menu appearance
+//- card size not consistent
+//- change arrows with images
 
 const port = 6969;
 var express = require('express');

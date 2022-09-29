@@ -95,7 +95,6 @@ input[type=submit]:focus, button:focus {
 	position: absolute;
 	color: #999999;
 	text-shadow: 1px 0 0 #252525, 2px 0 0 #252525, 3px 0 0 #252525, 4px 0 0 #252525, 5px 0 0 #252525, 6px 0 0 #252525, -1px 0 0 #252525, -2px 0 0 #252525, -3px 0 0 #252525, -4px 0 0 #252525, -5px 0 0 #252525, -6px 0 0 #252525;
-	border: 1px solid #252525;
 }
 
 .noselect {
