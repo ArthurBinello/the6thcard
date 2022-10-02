@@ -145,7 +145,7 @@ socket.on('game-over', scores => {
 		resultMessage += "\n";
 	});
 	//TODO display in new div
-	console.log(resultMessage);
+	alert(resultMessage);
 });
 
 socket.on('new-round', () => {

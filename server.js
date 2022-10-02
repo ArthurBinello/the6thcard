@@ -4,8 +4,7 @@
 //- game info notification color
 //- left menu appearance
 //- card size not consistent
-//- Add bug report button
-//- Add favicon
+//- Better room code input
 
 const port = 6969;
 var express = require('express');
@@ -20,6 +19,7 @@ app.set('views', './views');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }));
+app.use('/favicon.ico', express.static('images/favicon.ico'));
 
 var rooms = {};
 var owners = {};
@@ -180,11 +180,12 @@ function getUserRooms(socket) {
 
 function dealCards(room) {
 	var cards = [];
+	var hand_size = 10;
 	for(var i = 1; i <= 104; i++){
 		cards.push(i);
 	}
 	for(var id in room.cards){
-		for(var j = 0; j < 10; j++){
+		for(var j = 0; j < hand_size; j++){
 			var randCard = cards.splice(Math.floor(Math.random()*cards.length), 1);
 			room.cards[id].push(randCard[0]);
 		}

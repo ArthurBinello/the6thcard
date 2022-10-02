@@ -96,6 +96,7 @@ socket.on('game-started', () => {
 function addStartButton(){
 	let menu = document.getElementById("menu");
 	let btn = document.createElement("BUTTON");
+	let list = document.getElementById("playerlist");
 	btn.innerHTML = 'Start Game';
 	btn.setAttribute('id', 'startGame');
 	if(playerlist.getElementsByClassName('lobbylist').length < 2){
@@ -103,6 +104,7 @@ function addStartButton(){
 	}
 	btn.addEventListener('click', startGame);
 	menu.appendChild(btn);
+	list.after(btn);
 }
 
 function startGame(){

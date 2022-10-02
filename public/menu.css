@@ -144,24 +144,28 @@ input[type=submit]:focus, button:focus {
 	padding-left: .5rem;
 }
 
-#leavelobby{
+.btn-small {
 	color: white;
 	padding: .5rem;
 	text-decoration: none;
 	border-radius: .5rem;
-	position: relative;
-	left: -4.65rem;
-	top: .5rem;
+
 }
 
-#leavelobby:hover{
+.btn-small:hover{
 	background-color: #1E1E1E;
 	box-shadow: 0 0 .5rem #1E1E1E;
 }
 
-#leavelobby:active{
+.btn-small:active{
 	background-color: #333333;
 	box-shadow: 0 0 .5rem #1E1E1E;
+}
+
+#leavelobby{
+	position: relative;
+	left: -4.65rem;
+	top: .5rem;
 }
 
 #info{
@@ -178,4 +182,8 @@ input[type=submit]:focus, button:focus {
 	border-style: solid;
 	border-radius: .5rem;
 	padding: 1rem;
+}
+
+#bug {
+	text-align: right;
 }
