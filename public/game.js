@@ -135,22 +135,44 @@ socket.on('ask-row-selection', () => {
 
 socket.on('game-over', scores => {
 	let place = 1;
-	let resultMessage = "";
+	let backdrop = document.getElementById('backdrop');
+	let results = document.getElementById('results');
+	let perso_result = document.getElementById('perso-result');
+	let rankings = document.getElementById('rankings');
 	scores.forEach(player => {
 		if(player[0] == myID){
 			if(place == 1){
-				resultMessage = "You won!\n" + resultMessage;
+				perso_result.innerHTML = "🏆 You won! 🏆";
 			} else {
-				resultMessage = "You lost!\n" + resultMessage;
+				perso_result.innerHTML = "You lost!";
 			}
 		}
+		let player_rank = document.createElement("li");
+		player_rank.classList.add('ranking');
 		let currentPlayer = document.getElementById(player[0]).getElementsByTagName('div')[0].innerHTML;
-		resultMessage += place + " - " + currentPlayer + " : " + player[1] + " pts";
+		let resultMessage = "";
+		switch(place){
+			case 1:
+				resultMessage += '🥇 ';
+				break;
+			case 2:
+				resultMessage += '🥈 ';
+				break;
+			case 3:
+				resultMessage += '🥉 ';
+				break;
+			default:
+				resultMessage += place + ' ';
+				break;
+		}
+		resultMessage += " - " + currentPlayer + " : " + player[1] + " point";
+		if(player[1] != 1) { resultMessage += 's'; }
 		place++;
-		resultMessage += "\n";
+		player_rank.appendChild(document.createTextNode(resultMessage));
+		rankings.appendChild(player_rank);
 	});
-	//TODO display in new div
-	alert(resultMessage);
+	backdrop.style.display = "block";
+	results.style.display = "block";
 });
 
 socket.on('new-round', () => {
