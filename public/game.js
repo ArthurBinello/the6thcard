@@ -43,20 +43,23 @@ socket.on('player-setup', game => {
 		}
 
 		var name = document.createElement("div");
+		name.classList.add("name");
 		var textName = document.createTextNode(text);
 		name.appendChild(textName);
-		player.appendChild(name);
 		var points = document.createElement("div");
-		var pointsText = document.createTextNode("0");
+		points.classList.add("points");
+		var pointsText = document.createTextNode("0 points");
 		points.appendChild(pointsText);
+		player.appendChild(name);
 		player.appendChild(points);
 		var cardSelect = document.createElement("div");
-		var cardSelectText = document.createTextNode("?");
+		cardSelect.classList.add('cardSelect');
+		var cardSelectText = document.createTextNode("❓");
 		cardSelect.appendChild(cardSelectText);
 		player.appendChild(cardSelect);
 
 		player.setAttribute('id', id);
-		player.setAttribute('class', 'lobbylist ' + game.colors[id]);
+		player.setAttribute('class', game.colors[id]);
 		playerlist.appendChild(player);
 	}
 	showCards(game.cards[myID]);
@@ -64,14 +67,16 @@ socket.on('player-setup', game => {
 
 socket.on('just-played-update', player => {
 	var playerSelected = document.getElementById(player.playerID);
-	var oldPoints = playerSelected.childNodes[1].innerHTML;
+	var oldPoints = playerSelected.childNodes[1].innerHTML.replace(/\D/g, "");
 	if(oldPoints < player.points){
 		let pointsDiff = player.points-oldPoints;
-		showInfo(playerSelected.childNodes[0].innerHTML + " has gained " + pointsDiff + " points.", player.color);
+		let text = playerSelected.childNodes[0].innerHTML + " has gained " + pointsDiff + " point";
+		if(pointsDiff != 1) { text += "s"; }
+		showInfo(text, player.color);
 	}
-	//TODO real display
-	playerSelected.childNodes[1].innerHTML = player.points;
-	playerSelected.childNodes[2].innerHTML = "O";
+	playerSelected.childNodes[1].innerHTML = player.points + " point";
+	if(player.points != 1) { playerSelected.childNodes[1].innerHTML += "s"; }
+	playerSelected.childNodes[2].innerHTML = "❗";
 });
 
 socket.on('game-state', board => {
@@ -88,8 +93,8 @@ socket.on('game-state', board => {
 
 socket.on('card-played', player => {
 	var cardSelected = document.getElementById(player).childNodes[2];
-	//TODO real thing
-	cardSelected.innerHTML = "!";
+	//TODO Change color?
+	cardSelected.innerHTML = "✔";
 });
 
 socket.on('update-hand', newHand => {
@@ -103,7 +108,7 @@ socket.on('update-hand', newHand => {
 socket.on('reveal-cards', playedCards => {
 	Object.keys(playedCards).forEach(function(key) {
 		var cardSelected = document.getElementById(key).childNodes[2];
-		//TODO show value
+		//TODO show value (points)
 		cardSelected.innerHTML = playedCards[key];
 	});
 
@@ -149,6 +154,7 @@ socket.on('game-over', scores => {
 });
 
 socket.on('new-round', () => {
+	//TODO reset card shown to ?
 	showInfo("A new round is starting.", "");
 	let cards = hand.children;
 	for(var i = 0; i < cards.length; i++){
