@@ -125,3 +125,10 @@ function showInfo(msg, color){
 		info.removeChild(li);
 	}, 5000);
 }
+
+var copyCode = document.getElementById('copycode');
+copyCode.addEventListener('click', function(){
+	navigator.clipboard.writeText(document.getElementById('roomcode').textContent || document.getElementById('roomcode').innerText);
+	copyCode.innerHTML = '☑️';
+	setTimeout(function() { copyCode.innerHTML = '📋' }, 3000)
+});

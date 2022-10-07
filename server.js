@@ -2,12 +2,14 @@
 //- board too big with 5 columns (+ center)
 //- Better room code input
 //- Block reload of page creating duplicate players
-//- Add copy code button
 //- Align text in 100+ cards in hand
 //- Write rules
 //- Fix player list display when resizing
 //- Remove random colors when reloading lobby
 //- Add play again button
+//- Day/night mode
+//- i18n
+//- Last owner not cleared when reloading lobby
 
 const port = 6969;
 var express = require('express');
