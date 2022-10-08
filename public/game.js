@@ -20,7 +20,6 @@ for(let btn of rowButtons){
 };
 
 //TODO prevent reloading
-//TODO redirect if direct access
 socket.emit('connect-game', {name : username, room : room, owner : owner, color : color});
 
 socket.on('return-id', info => {
@@ -183,6 +182,12 @@ socket.on('new-round', () => {
 		cards[i].addEventListener('click', selectCard);
 		cards[i].style.cursor = 'pointer';
 	}
+});
+
+socket.on('user-dc', user => {
+	let dc = document.getElementById(user.id);
+	playerlist.removeChild(dc);
+	showInfo(user.name + " has left the lobby.", user.color);
 });
 
 function showCards(cards){

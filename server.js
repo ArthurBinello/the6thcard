@@ -1,15 +1,13 @@
 //TODO list:
 //- board too big with 5 columns (+ center)
 //- Better room code input
-//- Block reload of page creating duplicate players
 //- Align text in 100+ cards in hand
 //- Write rules
 //- Fix player list display when resizing
-//- Remove random colors when reloading lobby
 //- Add play again button
 //- Day/night mode
 //- i18n
-//- Last owner not cleared when reloading lobby
+//- Remove duplicate players when reloading page
 
 const port = 6969;
 var express = require('express');
@@ -49,9 +47,8 @@ app.get('*', (req, res) => {
 });
 
 io.on('connection', socket => {
-	//lobby
 	socket.on('new-user', player => {
-		if(rooms[player.room] == null){
+		if(rooms[player.room] == null) {
 			if(player.owner != 1){
 				socket.emit('unknown-room');
 				return;
@@ -60,7 +57,7 @@ io.on('connection', socket => {
 			let roomList = Object.keys(rooms);
 			socket.broadcast.emit('update-room-list', roomList);
 		}
-		if(Object.keys(rooms[player.room].users).length >= 10){
+		if(Object.keys(rooms[player.room].users).length >= 10) {
 			socket.emit('full-lobby');
 			return;
 		}
@@ -69,15 +66,15 @@ io.on('connection', socket => {
 
 		let color;
 		let colors = [];
-		for(var key in rooms[player.room].colors){
+		for(var key in rooms[player.room].colors) {
 			colors.push(rooms[player.room].colors[key]);
 		}
-		do{
+		do {
 			color = colorList[Math.floor(Math.random() * colorList.length)];
-		}while(colors.includes(color));
+		} while(colors.includes(color));
 		rooms[player.room].colors[socket.id] = color;
 
-		if(player.owner == 1){
+		if(player.owner == 1) {
 			owners[player.room] = socket.id;
 		}
 
@@ -88,7 +85,7 @@ io.on('connection', socket => {
 	socket.on('disconnect', () => {
 		//TODO separate leaving during game and during lobby
 		getUserRooms(socket).forEach(room => {
-			if(Object.keys(rooms[room].users).length <= 1){
+			if(Object.keys(rooms[room].users).length <= 1) {
 				delete owners[room];
 				delete rooms[room];
 				let roomList = Object.keys(rooms);
@@ -99,9 +96,22 @@ io.on('connection', socket => {
 					owners[room] = keys[keys.length * Math.random() << 0];
 				}
 				io.sockets.to(owners[room]).emit('ownership');
-				socket.to(room).broadcast.emit('user-dc', {id : socket.id, name : rooms[room].users[socket.id], color : rooms[room].colors[socket.id], owner : owners[room], ownerName : rooms[room].users[owners[room]], ownerColor : rooms[room].colors[owners[room]]});
+				socket.to(room).broadcast.emit('user-dc', { id : socket.id, name : rooms[room].users[socket.id], color : rooms[room].colors[socket.id], owner : owners[room], ownerName : rooms[room].users[owners[room]], ownerColor : rooms[room].colors[owners[room]] });
 				delete rooms[room].users[socket.id];
 				delete rooms[room].colors[socket.id];
+			}
+		});
+		getUserGames(socket).forEach(game => {
+			if(Object.keys(games[game].users).length <= 1) {
+				delete games[game];
+			} else {
+				io.in(game).emit('user-dc', { id : socket.id, name : games[game].users[socket.id], color : games[game].colors[socket.id] });
+				delete games[game].users[socket.id];
+				delete games[game].colors[socket.id];
+				delete games[game].cards[socket.id];
+				delete games[game].points[socket.id];
+				delete games[game].round[socket.id];
+				games[game].playersConnected--;
 			}
 		});
 	});
@@ -111,9 +121,8 @@ io.on('connection', socket => {
 		io.in(settings.room).emit('game-started');
 	});
 
-	//game
 	socket.on('connect-game', player => {
-		if(games[player.room] == null){
+		if(games[player.room] == null) {
 			socket.emit('unknown-room');
 			return;
 		}
@@ -125,7 +134,7 @@ io.on('connection', socket => {
 		games[player.room].round[socket.id] = null;
 		games[player.room].playersConnected++;
 		socket.emit('return-id', {IDPlayer : socket.id, pointValues : pointCards});
-		if(games[player.room].playersConnected >= games[player.room].totalPlayers){
+		if(games[player.room].playersConnected >= games[player.room].totalPlayers) {
 			dealCards(games[player.room]);
 			io.in(player.room).emit('player-setup', games[player.room]);
 			io.in(player.room).emit('game-state', games[player.room].board);
@@ -180,7 +189,16 @@ function getUserRooms(socket) {
 			names.push(name);
 		}
 		return names;
-	}, [])
+	}, []);
+}
+
+function getUserGames(socket) {
+	return Object.entries(games).reduce((names, [name, game]) => {
+		if (game.users[socket.id] != null){
+			names.push(name);
+		}
+		return names;
+	}, []);
 }
 
 function dealCards(room) {
