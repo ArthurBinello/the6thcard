@@ -1,13 +1,15 @@
-//TODO list:
-//- board too big with 5 columns (+ center)
+//Future improvments:
 //- Better room code input
-//- Align text in 100+ cards in hand
-//- Write rules
-//- Fix player list display when resizing
+//- Better alert box
 //- Add play again button
 //- Day/night mode
 //- i18n
-//- Remove duplicate players when reloading page
+
+//TODO list:
+//- board too big with 5 columns (+ center)
+//- Align text in 100+ cards in hand
+//- Write rules
+//- Fix player list display when resizing
 
 const port = 6969;
 var express = require('express');
@@ -83,7 +85,6 @@ io.on('connection', socket => {
 	});
 
 	socket.on('disconnect', () => {
-		//TODO separate leaving during game and during lobby
 		getUserRooms(socket).forEach(room => {
 			if(Object.keys(rooms[room].users).length <= 1) {
 				delete owners[room];
@@ -112,18 +113,31 @@ io.on('connection', socket => {
 				delete games[game].points[socket.id];
 				delete games[game].round[socket.id];
 				games[game].playersConnected--;
+				if(games[game].playersConnected <= 1){
+					var scores = Object.keys(games[game].points).map(function(key) {
+						return [key, games[game].points[key]];
+					});
+					scores.sort(function(first, second) {
+						return first[1]-second[1];
+					});
+					io.in(game).emit('game-over', scores);
+				}
 			}
 		});
 	});
 
 	socket.on('start-game', settings => {
-		games[settings.room] = { users : {}, cards : {}, colors : {}, points : {}, totalPlayers : settings.nbPlayers, playersConnected : 0, board : {}, round : {} };
+		games[settings.room] = { users : {}, cards : {}, colors : {}, points : {}, totalPlayers : settings.nbPlayers, playersConnected : 0, board : {}, round : {}, gameStarted: false };
 		io.in(settings.room).emit('game-started');
 	});
 
 	socket.on('connect-game', player => {
 		if(games[player.room] == null) {
-			socket.emit('unknown-room');
+			socket.emit('reject-user', "This room doesn't exist.");
+			return;
+		}
+		if(games[player.room].gameStarted){
+			socket.emit('reject-user', "The game has already started.");
 			return;
 		}
 		socket.join(player.room);
@@ -134,7 +148,8 @@ io.on('connection', socket => {
 		games[player.room].round[socket.id] = null;
 		games[player.room].playersConnected++;
 		socket.emit('return-id', {IDPlayer : socket.id, pointValues : pointCards});
-		if(games[player.room].playersConnected >= games[player.room].totalPlayers) {
+		if(games[player.room].playersConnected >= games[player.room].totalPlayers && !games[player.room].gameStarted) {
+			games[player.room].gameStarted = true;
 			dealCards(games[player.room]);
 			io.in(player.room).emit('player-setup', games[player.room]);
 			io.in(player.room).emit('game-state', games[player.room].board);
@@ -220,7 +235,7 @@ function dealCards(room) {
 	}
 }
 
-//TODO errors when placing cards
+//TODO errors when placing cards (investigate)
 function playRound(room) {
 	if(isRoundOver(room)){
 		endRound(room);

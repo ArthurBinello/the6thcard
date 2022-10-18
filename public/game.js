@@ -19,7 +19,6 @@ for(let btn of rowButtons){
 	});
 };
 
-//TODO prevent reloading
 socket.emit('connect-game', {name : username, room : room, owner : owner, color : color});
 
 socket.on('return-id', info => {
@@ -28,8 +27,8 @@ socket.on('return-id', info => {
 	sessionStorage.setItem('id', myID);
 });
 
-socket.on('unknown-room', () => {
-	window.alert("This room doesn't exist.");
+socket.on('reject-user', message => {
+	window.alert(message);
 	window.location.href = window.location.protocol + '//' + window.location.host;
 });
 
@@ -187,7 +186,7 @@ socket.on('new-round', () => {
 socket.on('user-dc', user => {
 	let dc = document.getElementById(user.id);
 	playerlist.removeChild(dc);
-	showInfo(user.name + " has left the lobby.", user.color);
+	showInfo(user.name + " has left the game.", user.color);
 });
 
 function showCards(cards){

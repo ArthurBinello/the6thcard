@@ -26,7 +26,6 @@ startForm.addEventListener('submit', e => {
 	let roomCode;
 	let owner = 0;
 	if(formSource == 'create'){
-		//TODO handle server side
 		roomCode = generateNewRoom();
 		owner = 1;
 	} else {
