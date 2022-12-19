@@ -28,19 +28,28 @@
 				<h2>Rules</h2>
 				<!--TODO : write rules-->
 				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin cursus purus vel nulla viverra porttitor. Proin ultrices odio nibh, a placerat felis vestibulum ut. Praesent lacinia fringilla dictum. Cras elementum urna sit amet elit mattis maximus. Phasellus id diam nec risus sodales aliquet et nec orci. Nunc scelerisque tempor urna, at fringilla felis sollicitudin non. Donec imperdiet quam porta ultricies consequat.
+					The 6th atom is a simultaneous card game where the goal of the game is to have the least amount of points at the end of the game.
 				</p>
 				<p>
-					Etiam pulvinar dolor laoreet elit finibus suscipit. Aliquam ut mi non leo semper tempus. Curabitur efficitur et nisl convallis iaculis. Etiam fermentum nibh imperdiet libero feugiat, sed iaculis augue elementum. Nullam nec erat nec justo rutrum dictum sit amet nec eros. Nam pharetra mattis suscipit. Duis ante velit, efficitur in nunc vitae, gravida accumsan nibh. Cras facilisis sapien massa, et rhoncus urna placerat in. Mauris bibendum ligula libero, non feugiat augue tempor eget.
+					Each player starts the game with 10 cards. Each card has 2 values: the value for placing purposes and the number of points it is worth. The value of the card goes from 1 to 104 with no duplicates. Cards that are multiple of 5 are worth 2 points, multiples of 10: 3 points, multiple of 11: 5 points, the card 55 is worth 7 points and every other card is worth 1 point.
 				</p>
 				<p>
-					Curabitur iaculis odio eget tellus tristique pharetra. Suspendisse facilisis magna eros, quis sagittis justo egestas vitae. Mauris hendrerit porta nunc, quis molestie nunc. Proin at metus purus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum ac lorem augue. Sed vel blandit mi, vel aliquet sem. Aliquam vel justo diam. Morbi eu orci at massa mattis gravida nec sed orci. Nunc sed mi a turpis faucibus porttitor. Curabitur sollicitudin facilisis eros at lacinia. Proin cursus neque id erat congue, eu blandit eros vestibulum.
+					Each player is given 10 cards at random and 4 additional cards are drawn at random and placed in the middle of the board face up thus creating the 4 piles.
 				</p>
 				<p>
-					Integer massa dolor, rhoncus nec ornare vel, tempus non est. Praesent sapien risus, interdum elementum orci eget, consequat feugiat turpis. Proin tristique erat sed magna tempor gravida. Proin vulputate ipsum auctor interdum pulvinar. Morbi hendrerit blandit augue non posuere. Mauris commodo id lorem ut ultrices. Donec condimentum erat vitae dapibus pretium. Nam lorem sapien, luctus at finibus a, fringilla in neque. Pellentesque venenatis libero non nunc efficitur interdum. Nulla facilisi. Aenean sit amet erat ex. Etiam fringilla ac odio et interdum. In tempor vitae purus sed imperdiet. Nunc a ultrices tellus.
+					For each turn, every player chooses a card from their hand and place it in front of them face down.
 				</p>
 				<p>
-					Sed dictum, justo non pulvinar scelerisque, augue nunc posuere nisl, at facilisis nisi nisi nec est. Aenean nec elementum dolor. Maecenas porta diam orci, id mollis velit porttitor eget. Sed consequat gravida justo at aliquam. Sed lacinia, justo tincidunt maximus interdum, mauris nisi lacinia odio, ac efficitur felis magna eu nisi. Vivamus ac mauris id sapien posuere vehicula. Etiam tellus dui, rhoncus id enim at, sodales dictum nisl. Ut euismod egestas nisi. Vivamus finibus sollicitudin lorem, sagittis vestibulum neque sagittis sed. In eros leo, aliquam quis pretium non, posuere sed sapien.
+					Once every player has played a card, they are all revealed at the same time. Starting from the lowest valued card, the player must place it on the pile which has the closest value which is under the value of the placed card.
+				</p>
+				<p>
+					If the card is the 6th on the pile, the player must take the 5 previous cards (starting a new pile with the card they just played) and place it next to them, therefore gaining the amount of points associated with the cards they just gained.
+				</p>
+				<p>
+					If the card cannot be placed (is higher than any number on top of the pile), the player must choose a pile for which they take the associated card(s) (and gain the amount of point) to their side and replace the pile with their card.
+				</p>
+				<p>
+					Once 10 turns have passed, every player should have played all of their cards and the winner is the player with the lowest amount of points.
 				</p>
 			</div>
 			<a href="./"><button id="mainmenu" name="mainmenu">Go Back</button></a>

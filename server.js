@@ -4,12 +4,14 @@
 //- Add play again button
 //- Day/night mode
 //- i18n
+//- reconnection when re-entering game
 
 //TODO list:
-//- board too big with 5 columns (+ center)
 //- Align text in 100+ cards in hand
-//- Write rules
 //- Fix player list display when resizing
+//- Change checkmark color
+//- Show card value on reveal
+//- Reset card shown to unknown
 
 const port = 6969;
 var express = require('express');
@@ -235,7 +237,6 @@ function dealCards(room) {
 	}
 }
 
-//TODO errors when placing cards (investigate)
 function playRound(room) {
 	if(isRoundOver(room)){
 		endRound(room);
