@@ -52,6 +52,7 @@ socket.on('player-setup', game => {
 		player.appendChild(points);
 		var cardSelect = document.createElement("div");
 		cardSelect.classList.add('cardSelect');
+		cardSelect.classList.add('cardBackground');
 		var cardSelectText = document.createTextNode("❓");
 		cardSelect.appendChild(cardSelectText);
 		player.appendChild(cardSelect);
@@ -91,7 +92,6 @@ socket.on('game-state', board => {
 
 socket.on('card-played', player => {
 	var cardSelected = document.getElementById(player).childNodes[2];
-	//TODO Change color?
 	cardSelected.innerHTML = "✔";
 });
 
@@ -106,8 +106,9 @@ socket.on('update-hand', newHand => {
 socket.on('reveal-cards', playedCards => {
 	Object.keys(playedCards).forEach(function(key) {
 		var cardSelected = document.getElementById(key).childNodes[2];
-		//TODO show value (points)
 		cardSelected.innerHTML = playedCards[key];
+		cardSelected.classList.remove("cardBackground");
+		cardSelected.classList.add(pointCards[playedCards[key]] + "pts");
 	});
 
 	let cards = hand.getElementsByTagName("li");
@@ -174,12 +175,17 @@ socket.on('game-over', scores => {
 });
 
 socket.on('new-round', () => {
-	//TODO reset card shown to ?
 	showInfo("A new round is starting.", "");
 	let cards = hand.children;
 	for(var i = 0; i < cards.length; i++){
 		cards[i].addEventListener('click', selectCard);
 		cards[i].style.cursor = 'pointer';
+	}
+	for(var player in playerlist.children){
+		var cardSelected = playerlist.children[player].children[2];
+		cardSelected.innerHTML = "❓";
+		cardSelected.classList.add("cardBackground");
+		cardSelected.classList.remove("1pts","2pts","3pts","5pts","7pts");
 	}
 });
 

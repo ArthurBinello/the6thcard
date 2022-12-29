@@ -9,9 +9,6 @@
 //TODO list:
 //- Align text in 100+ cards in hand
 //- Fix player list display when resizing
-//- Change checkmark color
-//- Show card value on reveal
-//- Reset card shown to unknown
 
 const port = 6969;
 var express = require('express');

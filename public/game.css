@@ -56,7 +56,6 @@ body {
 #playerlist .cardSelect {
 	margin: .5rem;
 	background-color: #999999;
-	background-image : url("images/card.png");
 	background-position: center center;
 	background-size: contain;
 	background-repeat: no-repeat;
@@ -65,6 +64,10 @@ body {
 	float: right;
 	color: black;
 	grid-area: 1 / 2 / 3 / 3;
+}
+
+#playerlist .cardBackground {
+	background-image : url("images/card.png");
 }
 
 #playerlist .infos {
