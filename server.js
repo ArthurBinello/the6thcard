@@ -5,6 +5,7 @@
 //- Day/night mode
 //- i18n
 //- reconnection when re-entering game
+//- Make sure the board doesn't move around
 
 //TODO list:
 //- Fix player list display when resizing

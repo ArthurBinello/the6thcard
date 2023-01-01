@@ -217,7 +217,8 @@ function showCards(cards){
 function editCell(x, y, value){
 	let row = board.getElementsByTagName("tr")[x];
 	let cell = row.getElementsByTagName("td")[y];
-	cell.innerHTML = value;
+	var content = cell.children[0]
+	content.innerHTML = value;
 	if(value == ""){
 		cell.className = "";
 	} else {

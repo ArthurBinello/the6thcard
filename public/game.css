@@ -103,6 +103,14 @@ body {
 	width: 2.75rem;
 }
 
+.placedCard p {
+	width: 2.5rem;
+	display: flex;
+	justify-content: center;
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
 #board button {
 	margin: 0;
 	font-size: xx-large;
