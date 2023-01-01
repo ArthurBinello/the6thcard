@@ -6,6 +6,7 @@
 //- i18n
 //- reconnection when re-entering game
 //- Make sure the board doesn't move around
+//- More responsive interface
 
 const port = 6969;
 var express = require('express');

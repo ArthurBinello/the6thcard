@@ -1,9 +1,12 @@
 {
-  "name": "6nimmt",
+  "name": "6th-card",
   "version": "1.0.0",
   "description": "the game 6 nimmt online",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "dev": "node .\\server.js",
+    "start": "yarn run build && node server.js",
+    "build": "echo \"build\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Arthur Binello",
@@ -12,6 +15,8 @@
     "ejs": "^3.1.8",
     "express": "^4.17.3",
     "jquery": "^3.6.1",
-    "socket.io": "^2.4.1"
+    "react-scripts": "^5.0.1",
+    "socket.io": "^2.4.1",
+    "yarn": "^1.22.19"
   }
 }
