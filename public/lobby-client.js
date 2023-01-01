@@ -13,17 +13,17 @@ roomCode.innerHTML = room;
 socket.emit('new-user', {name : name, room : room, owner : owner});
 
 socket.on('user-added', user => {
-	var you = document.createElement("li");
+	var player = document.createElement("li");
 	if(user.owner == 1){
 		let crown = document.createElement("div");
 		crown.innerHTML = '👑';
 		crown.className = "owner";
-		you.appendChild(crown);
+		player.appendChild(crown);
 	}
-	you.appendChild(document.createTextNode(user.name));
-	you.setAttribute('id', user.id);
-	you.setAttribute('class', 'lobbylist ' + user.color);
-	playerlist.appendChild(you);
+	player.appendChild(document.createTextNode(user.name));
+	player.setAttribute('id', user.id);
+	player.setAttribute('class', 'lobbylist ' + user.color);
+	playerlist.appendChild(player);
 	if(playerlist.getElementsByClassName('lobbylist').length >= 2 && document.getElementById('startGame')){
 		document.getElementById('startGame').disabled = false;
 	}
@@ -77,7 +77,12 @@ socket.on('user-dc', user => {
 		crown.className = "owner";
 		newOwner.insertBefore(crown, newOwner.firstChild);
 		setTimeout(function(){
-			showInfo(user.ownerName + " is the new owner.", user.ownerColor);
+			var text = user.ownerName;
+			if(owner == 1){
+				text += ' (you)';
+			}
+			text += " is the new owner."
+			showInfo(text, user.ownerColor);
 		}, 3000);
 	}
 });
@@ -121,9 +126,13 @@ function showInfo(msg, color){
 	}
 	info.className = color;
 	info.appendChild(li);
+	li.style.opacity = 1;
 	setTimeout(function(){
-		info.removeChild(li);
-	}, 5000);
+		(function fade(){(li.style.opacity-=.1)<0?li.style.display="none":setTimeout(fade,40)})();
+		setTimeout(function(){
+			info.removeChild(li);
+		}, 1000);
+	}, 4000);
 }
 
 var copyCode = document.getElementById('copycode');

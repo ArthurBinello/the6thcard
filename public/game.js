@@ -254,7 +254,11 @@ function showInfo(msg, color){
 	}
 	info.className = color;
 	info.appendChild(li);
+	li.style.opacity = 1;
 	setTimeout(function(){
-		info.removeChild(li);
-	}, 5000);
+		(function fade(){(li.style.opacity-=.1)<0?li.style.display="none":setTimeout(fade,40)})();
+		setTimeout(function(){
+			info.removeChild(li);
+		}, 1000);
+	}, 4000);
 }
