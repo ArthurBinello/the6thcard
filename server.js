@@ -7,17 +7,11 @@
 //- reconnection when re-entering game
 //- Make sure the board doesn't move around
 
-//TODO list:
-//- Fix player list display when resizing
-
 const port = 6969;
 var express = require('express');
-// var path = require('path');
 var io = require('socket.io')(3000);
 var app = express();
 const server = require('http').createServer(app);
-
-// var socket = io.listen(server);
 
 app.set('views', './views');
 app.set('view engine', 'ejs');
