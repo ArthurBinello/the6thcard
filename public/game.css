@@ -160,6 +160,13 @@ body {
 	width: 2.25rem;
 }
 
+#hand li p {
+	display: flex;
+	justify-content: center;
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
 .\31 pts { background-image : url("images/1pts.png") }
 .\32 pts { background-image : url("images/2pts.png") }
 .\33 pts { background-image : url("images/3pts.png") }

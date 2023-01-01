@@ -195,13 +195,19 @@ socket.on('user-dc', user => {
 	showInfo(user.name + " has left the game.", user.color);
 });
 
+socket.on('personnal-info', message => {
+	showInfo(message, color);
+});
+
 function showCards(cards){
 	while(hand.firstChild){
 		hand.removeChild(hand.firstChild);
 	}
 	for(var card in cards){
 		var cardEl = document.createElement("li");
-		cardEl.appendChild(document.createTextNode(cards[card]));
+		var paragraphEl = document.createElement("p");
+		paragraphEl.appendChild(document.createTextNode(cards[card]));
+		cardEl.appendChild(paragraphEl);
 		cardEl.className = pointCards[cards[card]] + "pts";
 		cardEl.addEventListener('click', selectCard);
 		hand.appendChild(cardEl);
@@ -221,12 +227,15 @@ function editCell(x, y, value){
 
 function selectCard(event){
 	var source = event.target || event.srcElement;
+	if (event.currentTarget !== event.target) {
+		source = event.target.parentElement;
+	}
 	let cards = hand.children;
 	for(var i = 0; i < cards.length; i++){
 		cards[i].className = cards[i].className.replace(/ selected/g, "");
 	}
 	source.className += ' selected';
-	socket.emit('select-card', {room : room, card : parseInt(source.innerHTML)});
+	socket.emit('select-card', {room : room, card : parseInt(source.childNodes[0].innerHTML)});
 }
 
 function selectRow(row){

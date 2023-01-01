@@ -7,7 +7,6 @@
 //- reconnection when re-entering game
 
 //TODO list:
-//- Align text in 100+ cards in hand
 //- Fix player list display when resizing
 
 const port = 6969;
@@ -157,6 +156,7 @@ io.on('connection', socket => {
 
 	socket.on('select-card', player => {
 		if(!games[player.room].cards[socket.id].includes(player.card)){
+			socket.emit('personnal-info', "You don't have this card. Please don't cheat.");
 			return;
 		}
 		games[player.room].round[socket.id] = player.card;
