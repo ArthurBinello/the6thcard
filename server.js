@@ -349,5 +349,5 @@ function getPoints(card){
 	return pointCards[card];
 }
 
-server.listen(port);
+server.listen(port, '0.0.0.0');
 console.debug('Server listening on : http://127.0.0.1:'+ port);

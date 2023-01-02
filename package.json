@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node .\\server.js",
     "start": "yarn run build && node server.js",
-    "build": "npm ci",
+    "build": "npm install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Arthur Binello",
