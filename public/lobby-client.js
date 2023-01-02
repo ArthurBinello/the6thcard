@@ -1,3 +1,4 @@
+var io = require('socket.io')(3000);
 const socket = io('https://0.0.0.0:3000');
 var name = sessionStorage.getItem('name');
 var room = sessionStorage.getItem('room');
