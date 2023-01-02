@@ -1,4 +1,4 @@
-const socket = io('http://localhost:3000');
+const socket = io('https://0.0.0.0:3000');
 var username = sessionStorage.getItem('name');
 var room = sessionStorage.getItem('room');
 var owner = sessionStorage.getItem('owner');

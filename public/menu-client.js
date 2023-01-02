@@ -1,4 +1,4 @@
-const socket = io('http://localhost:3000');
+const socket = io('https://0.0.0.0:3000');
 const startForm = document.getElementById('gameStart');
 const nameInput = document.getElementById('name');
 

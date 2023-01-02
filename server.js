@@ -8,7 +8,6 @@
 //- Make sure the board doesn't move around
 //- More responsive interface
 
-const port = 8080;
 const address = "0.0.0.0";
 var express = require('express');
 var io = require('socket.io')(3000);
@@ -350,5 +349,5 @@ function getPoints(card){
 	return pointCards[card];
 }
 
-server.listen(port, address);
-console.debug('Server listening on : http://'+address+':'+ port);
+server.listen(process.env.PORT, address);
+console.debug('Server listening on : https://' + address + ':' + process.env.PORT);
